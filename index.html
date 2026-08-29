@@ -2,187 +2,194 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<link rel="manifest" href="manifest.json">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Zulu Runner FIXED</title>
 <style>
-body{margin:0;overflow:hidden;background:#87CEEB;font-family:Arial Black;touch-action:none}
-#game{position:relative;width:100vw;height:100vh;overflow:hidden;background:linear-gradient(#ff8c42 0%, #87CEEB 55%)}
-#ground{position:absolute;bottom:0;width:100%;height:25%;background:#2ecc71;border-top:10px solid #27ae60;z-index:1}
-#player{position:absolute;left:30px;width:55px;height:70px;bottom:25%;z-index:10}
-.head{width:32px;height:32px;background:#8B5A2B;border-radius:50%;margin:0 auto}
-.hat{width:38px;height:12px;background:#D2A24A;margin:0 auto;border-radius:3px}
-.body{width:36px;height:24px;background:#8B5A2B;margin:0 auto;position:relative;border-radius:4px}
-.shield{position:absolute;right:-18px;top:-5px;width:16px;height:32px;background:#8B4513;border:2px solid #5D3311;border-radius:3px}
-.beads{width:28px;height:6px;background:red;margin:3px auto;border-radius:2px}
-.leg{position:absolute;bottom:-20px;width:7px;height:20px;background:#6B4226;border-radius:3px}
-.leg1{left:10px} .leg2{right:10px}
-.obs{position:absolute;bottom:25%;width:45px;height:50px;background:#3e2723;z-index:5;border-radius:4px;border:2px solid #000}
-.coin{position:absolute;width:28px;height:28px;background:#FFD700;border:3px solid #FFA500;border-radius:50%;z-index:4;box-shadow:0 0 8px #FFEB3B}
-.oneup{position:absolute;width:36px;height:36px;background:#ff4757;border-radius:50%;border:3px solid white;z-index:4;display:flex;align-items:center;justify-content:center;color:white;font-size:20px;animation:pulse 0.8s infinite alternate}
-@keyframes pulse{from{transform:scale(1)} to{transform:scale(1.15)}}
-.spear{position:absolute;width:40px;height:6px;background:#111;z-index:6;border-radius:2px}
-#ui{position:absolute;top:0;left:0;width:100%;display:flex;justify-content:space-between;padding:10px 12px;box-sizing:border-box;color:white;text-shadow:2px 2px 0 #000;z-index:20;font-size:14px;background:rgba(0,0,0,0.3)}
-/* FIXED BUTTON - HIGHER UP SO NOT CUT OFF */
-#btn{position:absolute;bottom:85px;right:15px;width:90px;height:90px;border-radius:50%;background:radial-gradient(#ff6b6b,#ee5a24);border:4px solid white;color:white;font-weight:bold;z-index:30;font-size:14px;box-shadow:0 4px 0 #000, 0 0 15px rgba(0,0,0,0.4)}
-#btn:active{transform:translateY(3px);box-shadow:0 1px 0 #000}
-.jump{animation:jumpAnim 0.6s ease-out}
-@keyframes jumpAnim{0%{bottom:25%}50%{bottom:60%}100%{bottom:25%}}
-.hit{animation:flash 0.4s 3}
-@keyframes flash{0%,100%{opacity:1}50%{opacity:0.3}}
-.screen{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;color:white;text-align:center;padding:20px}
-.screen button{padding:15px 30px;font-size:20px;background:#ff8c42;border:3px solid white;color:white;border-radius:12px;font-weight:bold;margin-top:12px}
-#timer{font-size:36px;color:#FFD700;margin:12px}
+html,body{margin:0;padding:0;height:100%;overflow:hidden}
+body{background:#FF8C42;font-family:Arial Black}
+#game{position:relative;width:100vw;height:100vh;background:linear-gradient(to bottom,#FF8C42 0%,#87CEEB 60%);overflow:hidden}
+#ground{position:absolute;bottom:0;width:100%;height:26%;background:#2ecc71;border-top:8px solid #27ae60;z-index:1}
+#player{position:absolute;left:25px;width:50px;height:65px;bottom:26%;z-index:10;background:transparent}
+#player .hat{width:36px;height:10px;background:#D2A24A;margin:0 auto}
+#player .head{width:30px;height:30px;background:#8B5A2B;border-radius:50%;margin:0 auto}
+#player .body{width:34px;height:22px;background:#8B5A2B;margin:2px auto;position:relative}
+#player .shield{position:absolute;right:-12px;top:0;width:12px;height:26px;background:#5D4037;border:2px solid #000}
+#player .legs{display:flex;justify-content:space-around;margin-top:2px}
+#player .leg{width:7px;height:16px;background:#6B4226}
+.obs{position:absolute;bottom:26%;width:42px;height:48px;background:#3E2723;border:2px solid #000;border-radius:4px;z-index:5}
+.coin{position:absolute;width:26px;height:26px;background:gold;border:2px solid orange;border-radius:50%;z-index:4}
+.heart{position:absolute;width:32px;height:32px;background:#ff3b3b;border:2px solid white;border-radius:50%;z-index:4;display:flex;align-items:center;justify-content:center;color:white}
+.spear{position:absolute;width:35px;height:5px;background:black;z-index:6}
+#ui{position:absolute;top:0;left:0;width:100%;display:flex;justify-content:space-between;padding:8px;box-sizing:border-box;color:white;text-shadow:1px 1px 0 #000;z-index:20;font-size:13px;background:rgba(0,0,0,0.25)}
+#btn{position:absolute;bottom:100px;right:18px;width:88px;height:88px;border-radius:50%;background:#e74c3c;border:4px solid white;color:white;font-weight:bold;z-index:30;font-size:13px;box-shadow:0 4px 0 #000}
+.jump{animation:jump 0.55s linear}
+@keyframes jump{0%{bottom:26%}50%{bottom:62%}100%{bottom:26%}}
+.hit{animation:flash 0.3s 3}
+@keyframes flash{0%,100%{opacity:1}50%{opacity:0.2}}
+#start{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;color:white;text-align:center}
+#start button{padding:14px 28px;font-size:18px;background:#ff8c42;border:3px solid white;color:white;border-radius:10px;margin-top:12px}
+#noLife{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:100;display:none;align-items:center;justify-content:center;flex-direction:column;color:white;text-align:center}
+#noLife button{padding:12px 24px;margin:8px;background:#ff8c42;border:2px solid white;color:white;border-radius:8px}
 </style>
 </head>
 <body>
 <div id="game">
- <div id="ui"><span id="livesUI">❤️❤️❤️❤️❤️</span><span id="score">AMANDLA: 0 | 🪙 0</span><span id="sp">SPEAR x∞</span></div>
- <div id="ground"></div>
- <div id="player"><div class="hat"></div><div class="head"></div><div class="body"><div class="shield"></div><div class="beads"></div></div><div class="leg leg1"></div><div class="leg leg2"></div></div>
- <button id="btn">THROW<br>⚔️</button>
- <div id="startScreen" class="screen">
-   <h1>ZULU RUNNER</h1>
-   <p id="livesText">❤️❤️❤️❤️❤️ (5/5)</p>
-   <p style="font-size:13px">50 Coins = +1 Life ❤️<br>Heart = instant 1UP</p>
-   <button onclick="startGame()">QALA! START</button>
-   <p style="font-size:11px;margin-top:10px;opacity:0.7">Fixed: Button not cut + Rocks kill now!</p>
- </div>
- <div id="noLivesScreen" class="screen" style="display:none">
-   <h1>NO LIVES!</h1>
-   <div id="timer">10:00</div>
-   <p id="refillInfo">Next life in...</p>
-   <button onclick="checkLives()">CHECK</button>
-   <button onclick="buyLife()">🪙 BUY 50 COINS = 1❤️</button>
- </div>
+<div id="ui"><span id="lives">❤️❤️❤️❤️❤️</span><span id="score">AMANDLA: 0 | COIN: 0</span></div>
+<div id="ground"></div>
+<div id="player"><div class="hat"></div><div class="head"></div><div class="body"><div class="shield"></div></div><div class="legs"><div class="leg"></div><div class="leg"></div></div></div>
+<button id="btn">THROW</button>
+<div id="start">
+<h1>ZULU RUNNER</h1>
+<p id="liveTxt">❤️❤️❤️❤️❤️</p>
+<p style="font-size:12px">50 coins = +1 life ❤️ | Heart = 1UP</p>
+<button onclick="startGame()">QALA START</button>
+</div>
+<div id="noLife">
+<h2>NO LIVES!</h2>
+<div id="timer" style="font-size:32px;color:gold">10:00</div>
+<p id="info"></p>
+<button onclick="checkLife()">CHECK LIVES</button>
+<button onclick="buyLife()">BUY 50 COINS = 1 LIFE</button>
+</div>
 </div>
 <script>
-let score=0,coins=0,coinsForLife=0,spears=999,jumping=false,speed=5,gameRunning=false,lives=5,invincible=false;
-const MAX_LIVES=5, REGEN_TIME=10*60*1000;
-let obsList=[], game=document.getElementById("game"), player=document.getElementById("player");
-let scoreEl=document.getElementById("score"), livesUI=document.getElementById("livesUI");
-
-function loadLives(){
- coins=parseInt(localStorage.getItem("zulu_coins")||0);
- let saved=localStorage.getItem("zulu_lives");
- let last=parseInt(localStorage.getItem("zulu_lastTime")||Date.now());
+let score=0,coins=0,need=0,lives=5,jump=false,speed=5,run=false,inv=false;
+let obs=[], game=document.getElementById("game"), player=document.getElementById("player");
+let scoreE=document.getElementById("score"), livesE=document.getElementById("lives");
+const MAX=5, REGEN=10*60*1000;
+function load(){
+ coins=parseInt(localStorage.getItem("zcoins")||"0");
+ let s=localStorage.getItem("zlives");
+ let last=parseInt(localStorage.getItem("zlast")||Date.now());
  let now=Date.now();
- if(saved===null) lives=MAX_LIVES;
- else {
-   lives=parseInt(saved);
-   let elapsed=now-last;
-   if(lives<MAX_LIVES){
-     let add=Math.floor(elapsed/REGEN_TIME);
-     if(add>0){ lives=Math.min(MAX_LIVES,lives+add); last+=add*REGEN_TIME; localStorage.setItem("zulu_lastTime",last); }
-   }
+ if(s==null) lives=MAX;
+ else{
+  lives=parseInt(s);
+  if(lives<MAX){
+   let add=Math.floor((now-last)/REGEN);
+   if(add>0){ lives=Math.min(MAX,lives+add); last+=add*REGEN; localStorage.setItem("zlast",last); }
+  }
  }
- updateUI();
- if(lives<=0) showNoLives();
+ ui();
+ if(lives<=0) showNo();
 }
-function updateUI(){
- livesUI.innerText="❤️".repeat(lives)+"🖤".repeat(MAX_LIVES-lives);
- document.getElementById("livesText").innerText=livesUI.innerText+" ("+lives+"/"+MAX_LIVES+")";
- scoreEl.innerText="AMANDLA: "+score+" | 🪙 "+coins+" ("+coinsForLife+"/50)";
- localStorage.setItem("zulu_lives",lives); localStorage.setItem("zulu_coins",coins);
- if(lives<MAX_LIVES && !localStorage.getItem("zulu_lastTime")) localStorage.setItem("zulu_lastTime",Date.now());
- if(lives>=MAX_LIVES) localStorage.removeItem("zulu_lastTime");
+function ui(){
+ livesE.innerText="❤️".repeat(lives)+"🖤".repeat(MAX-lives);
+ document.getElementById("liveTxt").innerText=livesE.innerText+" ("+lives+"/"+MAX+")";
+ scoreE.innerText="AMANDLA: "+score+" | COIN: "+coins+" ("+need+"/50)";
+ localStorage.setItem("zlives",lives);
+ localStorage.setItem("zcoins",coins);
+ if(lives<MAX && !localStorage.getItem("zlast")) localStorage.setItem("zlast",Date.now());
+ if(lives>=MAX) localStorage.removeItem("zlast");
 }
-function showNoLives(){ document.getElementById("startScreen").style.display="none"; document.getElementById("noLivesScreen").style.display="flex"; startTimer(); }
-function startTimer(){
- let last=parseInt(localStorage.getItem("zulu_lastTime")||Date.now());
+function showNo(){
+ document.getElementById("start").style.display="none";
+ document.getElementById("noLife").style.display="flex";
+ let last=parseInt(localStorage.getItem("zlast")||Date.now());
  setInterval(()=>{
-   let now=Date.now(), elapsed=now-last, remaining=REGEN_TIME-(elapsed%REGEN_TIME);
-   let m=Math.floor(remaining/60000), s=Math.floor((remaining%60000)/1000);
-   document.getElementById("timer").innerText=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
-   document.getElementById("refillInfo").innerText="Next ❤️ in "+m+"m "+s+"s - Full in "+Math.ceil(((MAX_LIVES-(parseInt(localStorage.getItem("zulu_lives")||0))-1)*REGEN_TIME+remaining)/60000)+"min";
+  let now=Date.now(); let rem=REGEN-((now-last)%REGEN);
+  let m=Math.floor(rem/60000), s=Math.floor((rem%60000)/1000);
+  document.getElementById("timer").innerText=(m<10?"0":"")+m+":"+(s<10?"0":"")+s;
+  document.getElementById("info").innerText="Next life in "+m+"m "+s+"s";
  },1000);
 }
-function checkLives(){ let last=parseInt(localStorage.getItem("zulu_lastTime")||Date.now()), now=Date.now(), add=Math.floor((now-last)/REGEN_TIME); if(add>0){ lives=Math.min(MAX_LIVES,lives+add); localStorage.setItem("zulu_lives",lives); localStorage.setItem("zulu_lastTime",last+add*REGEN_TIME); } updateUI(); if(lives>0){ document.getElementById("noLivesScreen").style.display="none"; document.getElementById("startScreen").style.display="flex"; } }
-function buyLife(){ if(coins>=50 && lives<MAX_LIVES){ coins-=50; coinsForLife=0; lives++; updateUI(); if(lives>0){ document.getElementById("noLivesScreen").style.display="none"; document.getElementById("startScreen").style.display="flex"; } } else alert("Need 50 coins, you have "+coins); }
-loadLives();
-
+function checkLife(){
+ let last=parseInt(localStorage.getItem("zlast")||Date.now());
+ let now=Date.now();
+ let add=Math.floor((now-last)/REGEN);
+ if(add>0){ lives=Math.min(MAX,lives+add); localStorage.setItem("zlives",lives); localStorage.setItem("zlast",last+add*REGEN); }
+ ui();
+ if(lives>0){ document.getElementById("noLife").style.display="none"; document.getElementById("start").style.display="flex"; }
+}
+function buyLife(){
+ if(coins>=50 && lives<MAX){ coins-=50; need=0; lives++; ui(); document.getElementById("noLife").style.display="none"; document.getElementById("start").style.display="flex"; }
+ else alert("Need 50 coins, you have "+coins);
+}
+load();
 function startGame(){
- if(lives<=0){ showNoLives(); return; }
- document.getElementById("startScreen").style.display="none";
- gameRunning=true; score=0; speed=5; coinsForLife=0; obsList=[];
- document.querySelectorAll(".obs,.coin,.oneup,.spear").forEach(e=>e.remove());
- setTimeout(spawnObs,1000); setTimeout(spawnCoin,800); setTimeout(spawnHeart,7000);
+ if(lives<=0){ showNo(); return; }
+ document.getElementById("start").style.display="none";
+ run=true; score=0; speed=5; need=0; obs=[];
+ document.querySelectorAll(".obs,.coin,.heart,.spear").forEach(e=>e.remove());
+ setTimeout(spawnObs,900);
+ setTimeout(spawnCoin,600);
+ setTimeout(spawnHeart,6000);
 }
-function jump(){ if(jumping||!gameRunning) return; jumping=true; player.classList.add("jump"); setTimeout(()=>{ player.classList.remove("jump"); jumping=false; },600); }
-game.addEventListener("touchstart",e=>{ if(e.target.id!="btn" && !e.target.closest(".screen")) jump(); });
+function doJump(){
+ if(jump||!run) return;
+ jump=true; player.classList.add("jump");
+ setTimeout(()=>{ player.classList.remove("jump"); jump=false; },550);
+}
+game.addEventListener("touchstart",e=>{
+ if(e.target.id!="btn" && e.target.tagName!="BUTTON") doJump();
+});
 document.getElementById("btn").addEventListener("touchstart",e=>{ e.preventDefault(); throwSpear(); });
-
 function throwSpear(){
- if(!gameRunning) return;
- let s=document.createElement("div"); s.className="spear"; s.style.left="85px"; s.style.bottom="calc(25% + 20px)"; game.appendChild(s);
+ if(!run) return;
+ let s=document.createElement("div"); s.className="spear"; s.style.left="80px"; s.style.bottom="calc(26% + 18px)"; game.appendChild(s);
  let mv=setInterval(()=>{
-   let l=parseInt(s.style.left); s.style.left=(l+12)+"px";
-   if(l>window.innerWidth){ s.remove(); clearInterval(mv); }
-   obsList.forEach((o,i)=>{
-     if(!o.parentElement) return;
-     let or=o.getBoundingClientRect(), sr=s.getBoundingClientRect();
-     if(sr.left < or.right && sr.right > or.left && sr.top < or.bottom && sr.bottom > or.top){
-       o.remove(); obsList.splice(i,1); s.remove(); clearInterval(mv); score+=20; updateUI();
-     }
-   });
+  let l=parseInt(s.style.left)||80; s.style.left=(l+13)+"px";
+  if(l>window.innerWidth){ s.remove(); clearInterval(mv); }
+  obs.forEach((o,i)=>{
+   if(!o.parentElement) return;
+   let a=o.getBoundingClientRect(), b=s.getBoundingClientRect();
+   if(b.left < a.right && b.right > a.left && b.top < a.bottom && b.bottom > a.top){
+    o.remove(); obs.splice(i,1); s.remove(); clearInterval(mv); score+=15; ui();
+   }
+  });
  },16);
 }
-
 function spawnObs(){
- if(!gameRunning) return;
- let o=document.createElement("div"); o.className="obs"; o.style.left=window.innerWidth+"px"; game.appendChild(o); obsList.push(o);
+ if(!run) return;
+ let o=document.createElement("div"); o.className="obs"; o.style.left=window.innerWidth+"px"; game.appendChild(o); obs.push(o);
  let mv=setInterval(()=>{
-   if(!gameRunning){ clearInterval(mv); return; }
-   let l=parseInt(o.style.left); o.style.left=(l-speed)+"px";
-   if(l < -50){ o.remove(); clearInterval(mv); obsList=obsList.filter(x=>x!=o); score+=10; updateUI(); if(score%60==0) speed+=0.4; }
-   // FIXED COLLISION - USE RECT OVERLAP, NOT BOTTOM CHECK
-   if(!invincible && !jumping){
-     let pr=player.getBoundingClientRect(), or=o.getBoundingClientRect();
-     // smaller hitbox so not too hard
-     if(pr.right-10 > or.left && pr.left+10 < or.right && pr.bottom-15 > or.top && pr.top+15 < or.bottom){
-       o.remove(); clearInterval(mv); obsList=obsList.filter(x=>x!=o);
-       lives--; updateUI(); player.classList.add("hit"); invincible=true;
-       setTimeout(()=>{ player.classList.remove("hit"); invincible=false; },800);
-       if(lives<=0){ localStorage.setItem("zulu_lastTime",Date.now()); gameRunning=false; setTimeout(()=>{ alert("Wafa! Score: "+score+" Coins: "+coins); showNoLives(); },200); }
-       else if(lives==MAX_LIVES-1) localStorage.setItem("zulu_lastTime",Date.now());
-     }
+  if(!run){ clearInterval(mv); return; }
+  let l=parseInt(o.style.left)||window.innerWidth; o.style.left=(l-speed)+"px";
+  if(l<-50){ o.remove(); clearInterval(mv); obs=obs.filter(x=>x!=o); score+=10; ui(); if(score%80==0) speed+=0.5; }
+  if(!inv && !jump){
+   let pr=player.getBoundingClientRect(), or=o.getBoundingClientRect();
+   if(pr.right-8 > or.left && pr.left+8 < or.right && pr.bottom-10 > or.top && pr.top+8 < or.bottom){
+    o.remove(); clearInterval(mv); obs=obs.filter(x=>x!=o);
+    lives--; ui(); player.classList.add("hit"); inv=true;
+    setTimeout(()=>{ player.classList.remove("hit"); inv=false; },700);
+    if(lives<=0){ localStorage.setItem("zlast",Date.now()); run=false; setTimeout(()=>{ alert("Wafa! Score "+score); showNo(); },150); }
+    else if(lives==MAX-1) localStorage.setItem("zlast",Date.now());
    }
+  }
  },16);
- if(gameRunning) setTimeout(spawnObs, 1300+Math.random()*800);
+ if(run) setTimeout(spawnObs, 1200+Math.random()*800);
 }
-
 function spawnCoin(){
- if(!gameRunning) return;
- let c=document.createElement("div"); c.className="coin"; c.style.left=window.innerWidth+"px"; c.style.bottom=(25+5+Math.random()*20)+"%"; game.appendChild(c);
+ if(!run) return;
+ let c=document.createElement("div"); c.className="coin"; c.style.left=window.innerWidth+"px"; c.style.bottom=(26+4+Math.random()*18)+"%"; game.appendChild(c);
  let mv=setInterval(()=>{
-   if(!gameRunning){ c.remove(); clearInterval(mv); return; }
-   let l=parseInt(c.style.left); c.style.left=(l-speed)+"px";
-   if(l< -40){ c.remove(); clearInterval(mv); return; }
-   let pr=player.getBoundingClientRect(), cr=c.getBoundingClientRect();
-   if(pr.left < cr.right && pr.right > cr.left && pr.top < cr.bottom && pr.bottom > cr.top){
-     c.remove(); clearInterval(mv); coins++; coinsForLife++; score+=5; updateUI();
-     if(coinsForLife>=50 && lives<MAX_LIVES){ lives++; coinsForLife=0; updateUI(); alert("1UP! +1 Life from 50 coins! ❤️"); }
-   }
+  if(!run){ c.remove(); clearInterval(mv); return; }
+  let l=parseInt(c.style.left)||window.innerWidth; c.style.left=(l-speed)+"px";
+  if(l<-40){ c.remove(); clearInterval(mv); return; }
+  let pr=player.getBoundingClientRect(), cr=c.getBoundingClientRect();
+  if(pr.left < cr.right && pr.right > cr.left && pr.top < cr.bottom && pr.bottom > cr.top){
+   c.remove(); clearInterval(mv); coins++; need++; score+=5; ui();
+   if(need>=50 && lives<MAX){ lives++; need=0; ui(); }
+  }
  },16);
- if(gameRunning) setTimeout(spawnCoin, 700+Math.random()*700);
+ if(run) setTimeout(spawnCoin, 700+Math.random()*600);
 }
-
 function spawnHeart(){
- if(!gameRunning) return;
+ if(!run) return;
  if(Math.random()<0.5){
-   let h=document.createElement("div"); h.className="oneup"; h.innerText="❤️"; h.style.left=window.innerWidth+"px"; h.style.bottom=(25+15+Math.random()*15)+"%"; game.appendChild(h);
-   let mv=setInterval(()=>{
-     if(!gameRunning){ h.remove(); clearInterval(mv); return; }
-     let l=parseInt(h.style.left); h.style.left=(l-speed)+"px";
-     if(l< -50){ h.remove(); clearInterval(mv); return; }
-     let pr=player.getBoundingClientRect(), hr=h.getBoundingClientRect();
-     if(pr.left < hr.right && pr.right > hr.left && pr.top < hr.bottom && pr.bottom > hr.top){
-       h.remove(); clearInterval(mv);
-       if(lives<MAX_LIVES){ lives++; updateUI(); } else { score+=30; updateUI(); }
-     }
-   },16);
+  let h=document.createElement("div"); h.className="heart"; h.innerText="❤️"; h.style.left=window.innerWidth+"px"; h.style.bottom=(26+12+Math.random()*15)+"%"; game.appendChild(h);
+  let mv=setInterval(()=>{
+   if(!run){ h.remove(); clearInterval(mv); return; }
+   let l=parseInt(h.style.left)||window.innerWidth; h.style.left=(l-speed)+"px";
+   if(l<-50){ h.remove(); clearInterval(mv); return; }
+   let pr=player.getBoundingClientRect(), hr=h.getBoundingClientRect();
+   if(pr.left < hr.right && pr.right > hr.left && pr.top < hr.bottom && pr.bottom > hr.top){
+    h.remove(); clearInterval(mv);
+    if(lives<MAX){ lives++; need=0; ui(); } else { score+=25; ui(); }
+   }
+  },16);
  }
- if(gameRunning) setTimeout(spawnHeart, 9000+Math.random()*8000);
+ if(run) setTimeout(spawnHeart, 8000+Math.random()*6000);
 }
 </script>
 </body>

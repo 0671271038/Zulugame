@@ -3,73 +3,189 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Zulu Runner - Life Pause</title>
+<title>Zulu Runner - Premium</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;900&display=swap" rel="stylesheet">
 <style>
-html,body{margin:0;padding:0;height:100%;overflow:hidden}
-body{background:#FF8C42;font-family:Arial Black}
-#game{position:relative;width:100vw;height:100vh;background:linear-gradient(to bottom,#FF8C42 0%,#87CEEB 60%);overflow:hidden}
-#ground{position:absolute;bottom:0;width:100%;height:26%;background:#2ecc71;border-top:8px solid #27ae60;z-index:1}
-#player{position:absolute;left:25px;width:50px;height:65px;bottom:26%;z-index:10}
-#player .hat{width:36px;height:10px;background:#D2A24A;margin:0 auto}
-#player .head{width:30px;height:30px;background:#8B5A2B;border-radius:50%;margin:0 auto}
-#player .body{width:34px;height:22px;background:#8B5A2B;margin:2px auto;position:relative}
-#player .shield{position:absolute;right:-12px;top:0;width:12px;height:26px;background:#5D4037;border:2px solid #000}
-#player .legs{display:flex;justify-content:space-around;margin-top:2px}
-#player .leg{width:7px;height:16px;background:#6B4226}
-.obs{position:absolute;bottom:26%;width:42px;height:48px;background:#3E2723;border:2px solid #000;border-radius:4px;z-index:5}
-.coin{position:absolute;width:26px;height:26px;background:gold;border:2px solid orange;border-radius:50%;z-index:4}
-.heart{position:absolute;width:32px;height:32px;background:#ff3b3b;border:2px solid white;border-radius:50%;z-index:4;display:flex;align-items:center;justify-content:center;color:white}
-.spear{position:absolute;width:35px;height:5px;background:black;z-index:6}
-#ui{position:absolute;top:0;left:0;width:100%;display:flex;justify-content:space-between;padding:8px;box-sizing:border-box;color:white;text-shadow:1px 1px 0 #000;z-index:20;font-size:13px;background:rgba(0,0,0,0.25)}
-#btn{position:absolute;bottom:100px;right:18px;width:88px;height:88px;border-radius:50%;background:#e74c3c;border:4px solid white;color:white;font-weight:bold;z-index:30;font-size:13px;box-shadow:0 4px 0 #000}
-.jump{animation:jump 0.55s linear}
-@keyframes jump{0%{bottom:26%}50%{bottom:62%}100%{bottom:26%}}
-.hit{animation:flash 0.3s 3}
-@keyframes flash{0%,100%{opacity:1}50%{opacity:0.2}}
-.screen{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;color:white;text-align:center;padding:20px;box-sizing:border-box}
-.screen button{padding:14px 28px;font-size:18px;background:#ff8c42;border:3px solid white;color:white;border-radius:10px;margin-top:12px}
-#noLife{display:none}
-#lifeLost{display:none;background:rgba(120,0,0,0.92)}
-#lifeLost h1{color:#FFD700;text-shadow:3px 3px 0 #000}
+html,body{margin:0;padding:0;height:100%;overflow:hidden;background:#0f0f0f}
+*{font-family:'Outfit',sans-serif;box-sizing:border-box}
+#game{position:relative;width:100vw;height:100vh;overflow:hidden;isolation:isolate}
+
+/* --- PREMIUM SKY --- */
+#sky{position:absolute;top:0;left:0;width:100%;height:74%;background:radial-gradient(ellipse at 70% 20%, #FFD78A 0%, #FF9A4A 25%, #FF6B35 45%, #8B3A2A 75%, #2C1810 100%);z-index:1}
+#sun{position:absolute;top:8%;right:12%;width:110px;height:110px;background:radial-gradient(circle, #FFF8DC 0%, #FFD700 30%, #FF8C00 70%);border-radius:50%;box-shadow:0 0 80px #FFD700, 0 0 140px #FF8C00;animation:sunPulse 4s ease-in-out infinite}
+@keyframes sunPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.cloud{position:absolute;background:rgba(255,255,255,0.85);border-radius:100px;filter:blur(1px)}
+.c1{top:12%;left:-20%;width:160px;height:40px;animation:cloudMove 45s linear infinite}
+.c2{top:22%;left:-30%;width:220px;height:30px;animation:cloudMove 60s linear infinite 10s}
+@keyframes cloudMove{from{transform:translateX(0)} to{transform:translateX(140vw)}}
+
+/* --- MOUNTAINS PARALLAX --- */
+#mountains{position:absolute;bottom:26%;left:0;width:100%;height:28%;z-index:2;opacity:0.6;background:
+radial-gradient(ellipse at 20% 100%, #4A2C1A 0%, transparent 60%),
+radial-gradient(ellipse at 50% 100%, #6B3A2A 0%, transparent 50%),
+radial-gradient(ellipse at 85% 100%, #3D2314 0%, transparent 60%)}
+
+/* --- TREES --- */
+.tree{position:absolute;bottom:26%;z-index:3;filter:drop-shadow(4px 4px 8px rgba(0,0,0,0.5))}
+.tree .trunk{width:14px;height:45px;background:linear-gradient(to right, #3E2723, #5D4037);margin:0 auto;border-radius:2px}
+.tree .leaves{width:65px;height:55px;background:radial-gradient(ellipse, #1B5E20 0%, #2E7D32 60%, #0D2818 100%);border-radius:60% 60% 40% 40%;margin:-10px auto 0;box-shadow:inset -8px -5px 0 rgba(0,0,0,0.2)}
+
+/* --- GROUND PREMIUM --- */
+#ground{position:absolute;bottom:0;width:100%;height:26%;background:
+linear-gradient(to bottom, #8BC34A 0%, #689F38 15%, #558B2F 40%, #33691E 100%);
+z-index:4;border-top:6px solid #4CAF50;box-shadow:0 -10px 30px rgba(0,0,0,0.3)}
+#ground::before{content:"";position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(90deg, transparent 0px, rgba(0,0,0,0.05) 2px, transparent 4px);opacity:0.3}
+
+/* --- PLAYER 3D WARRIOR --- */
+#player{position:absolute;left:35px;width:62px;height:78px;bottom:26%;z-index:10;filter:drop-shadow(3px 6px 6px rgba(0,0,0,0.6))}
+#player .shadow{position:absolute;bottom:-8px;left:5px;width:50px;height:12px;background:rgba(0,0,0,0.35);border-radius:50%;filter:blur(3px)}
+.w-head{width:34px;height:34px;background:linear-gradient(145deg, #A67C52, #6B4A2E);border-radius:50%;margin:0 auto;border:2px solid #3E2723;position:relative;box-shadow:inset -3px -3px 6px rgba(0,0,0,0.3)}
+.w-hat{width:44px;height:14px;background:linear-gradient(to bottom, #FFD54F, #FFA000);margin:0 auto -6px;border-radius:8px 8px 3px 3px;border:2px solid #000;box-shadow:0 2px 4px rgba(0,0,0,0.4);position:relative;z-index:2}
+.w-body{width:40px;height:28px;background:linear-gradient(145deg, #8D6E63, #5D4037);margin:2px auto 0;border-radius:8px;border:2px solid #3E2723;position:relative;box-shadow:inset 0 2px 3px rgba(255,255,255,0.2)}
+.w-shield{position:absolute;right:-18px;top:-2px;width:18px;height:34px;background:linear-gradient(to right, #8D6E63, #5D4037, #3E2723);border:2px solid #FFD700;border-radius:4px;box-shadow:2px 2px 6px rgba(0,0,0,0.5)}
+.w-shield::after{content:"◉";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#FFD700;font-size:10px}
+.w-beads{width:32px;height:7px;background:linear-gradient(90deg, #D32F2F, #FFEB3B, #1976D2, #D32F2F);margin:3px auto;border-radius:3px;border:1px solid #000}
+.w-legs{display:flex;justify-content:space-between;width:36px;margin:0 auto}
+.w-leg{width:10px;height:20px;background:linear-gradient(to bottom, #6D4C41, #3E2723);border-radius:0 0 4px 4px;border:1px solid #000}
+
+/* --- OBSTACLES PREMIUM --- */
+.obs{position:absolute;bottom:26%;width:48px;height:52px;background:linear-gradient(145deg, #4E342E, #3E2723, #1B0F0A);border:2px solid #000;border-radius:6px 6px 2px 2px;z-index:5;box-shadow:4px 4px 10px rgba(0,0,0,0.6)}
+.obs::before{content:"";position:absolute;top:4px;left:4px;right:4px;height:12px;background:linear-gradient(to bottom, rgba(255,255,255,0.15), transparent);border-radius:3px}
+.obs.rock::after{content:"🪨";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:28px}
+
+/* --- COIN PREMIUM --- */
+.coin{position:absolute;width:32px;height:32px;background:radial-gradient(circle at 35% 35%, #FFEB3B, #F9A825, #FF6F00);border:2px solid #FF8F00;border-radius:50%;z-index:4;box-shadow:0 0 15px #FFD700, inset -3px -3px 6px rgba(0,0,0,0.2);animation:spin 1.5s linear infinite}
+@keyframes spin{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
+
+/* --- UI PREMIUM --- */
+#ui{position:absolute;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;z-index:20;background:linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);backdrop-filter:blur(6px)}
+.ui-box{background:rgba(0,0,0,0.55);border:1.5px solid rgba(255,255,255,0.2);border-radius:14px;padding:6px 14px;color:white;font-weight:900;font-size:12px;letter-spacing:0.5px;box-shadow:0 4px 12px rgba(0,0,0,0.4)}
+#lives{font-size:16px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.8))}
+
+/* --- BUTTON PREMIUM --- */
+#btn{position:absolute;bottom:105px;right:20px;width:92px;height:92px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #FF5252, #D32F2F, #7F0000);border:3px solid #fff;color:white;font-weight:900;z-index:30;font-size:12px;letter-spacing:1px;box-shadow:0 6px 0 #4A0000, 0 10px 20px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.3);transition:all 0.1s}
+#btn:active{transform:translateY(4px);box-shadow:0 2px 0 #4A0000, 0 4px 10px rgba(0,0,0,0.5)}
+
+/* --- SCREENS PREMIUM GLASS --- */
+.screen{position:absolute;top:0;left:0;width:100%;height:100%;z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;color:white;text-align:center;padding:24px;backdrop-filter:blur(18px)}
+#start{background:radial-gradient(ellipse at center, rgba(60,20,0,0.92) 0%, rgba(15,5,0,0.96) 100%)}
+#lifeLost{background:radial-gradient(ellipse at center, rgba(120,15,15,0.94) 0%, rgba(40,0,0,0.96) 100%);display:none}
+#noLife{background:radial-gradient(ellipse at center, rgba(20,20,20,0.96) 0%, rgba(0,0,0,0.98) 100%);display:none}
+.glass-card{background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:24px;padding:28px 22px;box-shadow:0 20px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.15);max-width:340px;width:100%}
+.premium-btn{width:100%;padding:16px;background:linear-gradient(145deg, #FF8C42, #FF6B00);border:2px solid white;border-radius:14px;color:white;font-weight:900;font-size:16px;letter-spacing:1px;margin-top:14px;box-shadow:0 6px 0 #A84300, 0 10px 25px rgba(255,107,0,0.4);transition:0.1s}
+.premium-btn:active{transform:translateY(4px);box-shadow:0 2px 0 #A84300}
+.premium-btn.secondary{background:linear-gradient(145deg, #37474F, #263238);box-shadow:0 6px 0 #111, 0 10px 25px rgba(0,0,0,0.4)}
+
+/* --- RAIN EFFECT --- */
+#rain{position:absolute;top:0;left:0;width:100%;height:74%;z-index:6;pointer-events:none;display:none;background:repeating-linear-gradient(100deg, transparent 0px, transparent 2px, rgba(255,255,255,0.15) 2px, rgba(255,255,255,0.15) 3px);animation:rainFall 0.5s linear infinite}
+@keyframes rainFall{from{transform:translateY(-100px)} to{transform:translateY(100px)}}
+
+.jump{animation:jump 0.58s cubic-bezier(0.25,0.46,0.45,0.94)}
+@keyframes jump{0%{bottom:26%}40%{bottom:68%}100%{bottom:26%}}
+.hit{animation:flash 0.25s 4}
+@keyframes flash{0%,100%{opacity:1;filter:brightness(1)}50%{opacity:0.4;filter:brightness(2)}}
+.spear{position:absolute;width:44px;height:6px;background:linear-gradient(to right, #111, #444);border-radius:3px;z-index:6;box-shadow:0 2px 6px rgba(0,0,0,0.5)}
+.spear::after{content:"";position:absolute;right:-10px;top:-3px;width:0;height:0;border-left:12px solid #C0C0C0;border-top:6px solid transparent;border-bottom:6px solid transparent}
 </style>
 </head>
 <body>
 <div id="game">
-<div id="ui"><span id="lives">❤️❤️❤️❤️❤️</span><span id="score">AMANDLA: 0 | COIN: 0</span></div>
+<div id="sky"><div id="sun"></div><div class="cloud c1"></div><div class="cloud c2"></div></div>
+<div id="mountains"></div>
+<div id="rain"></div>
 <div id="ground"></div>
-<div id="player"><div class="hat"></div><div class="head"></div><div class="body"><div class="shield"></div></div><div class="legs"><div class="leg"></div><div class="leg"></div></div></div>
-<button id="btn">THROW</button>
 
-<div id="start" class="screen">
-<h1>ZULU RUNNER</h1>
-<p id="liveTxt">❤️❤️❤️❤️❤️</p>
-<p style="font-size:12px">50 coins = +1 life ❤️ | Heart = 1UP</p>
-<button onclick="startGame()">QALA START</button>
+<div id="ui">
+<span id="lives" class="ui-box">❤️❤️❤️❤️❤️</span>
+<span id="score" class="ui-box">AMANDLA 0 | 🪙 0</span>
+<span id="level" class="ui-box">EASY</span>
 </div>
 
-<!-- NEW: LIFE LOST PAUSE SCREEN -->
+<div id="player">
+<div class="shadow"></div>
+<div class="w-hat"></div>
+<div class="w-head"></div>
+<div class="w-body"><div class="w-shield"></div><div class="w-beads"></div></div>
+<div class="w-legs"><div class="w-leg"></div><div class="w-leg"></div></div>
+</div>
+
+<button id="btn">THROW<br>⚔️</button>
+
+<div id="start" class="screen">
+<div class="glass-card">
+<h1 style="font-size:38px;margin:0;letter-spacing:2px;background:linear-gradient(to bottom, #FFD700, #FF6B00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(3px 3px 0 #000)">ZULU<br>RUNNER</h1>
+<p style="font-size:10px;letter-spacing:4px;opacity:0.7;margin:6px 0 16px">PREMIUM EDITION</p>
+<p id="liveTxt" style="font-size:22px;margin:10px">❤️❤️❤️❤️❤️</p>
+<div style="display:flex;gap:8px;justify-content:center;margin:12px 0">
+<span class="ui-box" style="font-size:10px">🪙 50 = ❤️</span>
+<span class="ui-box" style="font-size:10px">❤️ = 1UP</span>
+<span class="ui-box" style="font-size:10px">🌧️ WEATHER</span>
+</div>
+<button class="premium-btn" onclick="startGame()">QALA - START WARRIOR</button>
+<p style="font-size:9px;opacity:0.5;margin-top:12px">Adult • Savanna • Endless • 4 Difficulties</p>
+</div>
+</div>
+
 <div id="lifeLost" class="screen">
-<h1>OUCH! 💥</h1>
-<p id="lostText">You lost 1 life!</p>
-<p id="remainLives" style="font-size:32px;margin:10px">❤️❤️❤️❤️🖤</p>
-<p style="font-size:12px">Be careful warrior!</p>
-<button onclick="resumeGame()">TRY AGAIN ▶</button>
+<div class="glass-card" style="border-color:rgba(255,60,60,0.5)">
+<h1 style="font-size:42px;margin:0">💥 OUCH!</h1>
+<p id="lostText" style="font-size:14px;opacity:0.9">Warrior hit!</p>
+<p id="remainLives" style="font-size:36px;margin:14px">❤️❤️❤️❤️🖤</p>
+<div style="width:100%;height:4px;background:rgba(255,255,255,0.15);border-radius:4px;overflow:hidden;margin:10px 0">
+<div id="protectBar" style="height:100%;width:100%;background:linear-gradient(90deg, #FFD700, #FF6B00);transition:width 1.5s linear"></div>
+</div>
+<p style="font-size:10px;letter-spacing:2px;opacity:0.6">PROTECTION ACTIVE 1.5s</p>
+<button class="premium-btn" onclick="resumeGame()">TRY AGAIN ▶</button>
+</div>
 </div>
 
 <div id="noLife" class="screen">
-<h2>NO LIVES!</h2>
-<div id="timer" style="font-size:32px;color:gold">10:00</div>
-<p id="info"></p>
-<button onclick="checkLife()">CHECK LIVES</button>
-<button onclick="buyLife()">BUY 50 COINS = 1 LIFE</button>
+<div class="glass-card">
+<h2 style="font-size:28px;margin:0">⚰️ NO LIVES</h2>
+<div id="timer" style="font-size:48px;color:#FFD700;margin:16px;font-weight:900">10:00</div>
+<p id="info" style="font-size:12px;opacity:0.7"></p>
+<button class="premium-btn" onclick="checkLife()">CHECK LIVES</button>
+<button class="premium-btn secondary" onclick="buyLife()">🪙 BUY 50 COINS = 1 ❤️</button>
+<button class="premium-btn secondary" style="font-size:12px" onclick="watchAd()">📺 WATCH AD = 1 ❤️ (FREE)</button>
+</div>
 </div>
 </div>
 
 <script>
-let score=0,coins=0,need=0,lives=5,jump=false,speed=5,run=false,inv=false;
+// SAME LOGIC AS BEFORE BUT WITH LEVEL SYSTEM + WEATHER
+let score=0,coins=0,need=0,lives=5,jump=false,speed=5,run=false,inv=false,level="EASY",levelScore=0;
 let obs=[], game=document.getElementById("game"), player=document.getElementById("player");
-let scoreE=document.getElementById("score"), livesE=document.getElementById("lives");
+let scoreE=document.getElementById("score"), livesE=document.getElementById("lives"), levelE=document.getElementById("level");
 const MAX=5, REGEN=10*60*1000;
+
+function addTrees(){
+ for(let i=0;i<4;i++){
+  let t=document.createElement("div"); t.className="tree";
+  t.style.left=(20 + i*24 + Math.random()*10)+"%";
+  t.style.transform="scale("+(0.7+Math.random()*0.6)+")";
+  t.innerHTML='<div class="leaves"></div><div class="trunk"></div>';
+  t.style.zIndex=3;
+  game.appendChild(t);
+ }
+}
+addTrees();
+
+function setWeather(){
+ let r=Math.random();
+ let rain=document.getElementById("rain");
+ let sky=document.getElementById("sky");
+ if(r<0.25){
+  rain.style.display="block";
+  sky.style.filter="brightness(0.7) contrast(1.2)";
+  levelE.innerText="🌧️ RAIN "+level;
+ } else {
+  rain.style.display="none";
+  sky.style.filter="brightness(1)";
+  levelE.innerText=level;
+ }
+ setTimeout(setWeather,15000);
+}
+setWeather();
 
 function load(){
  coins=parseInt(localStorage.getItem("zcoins")||"0");
@@ -89,12 +205,21 @@ function load(){
 }
 function ui(){
  livesE.innerText="❤️".repeat(lives)+"🖤".repeat(MAX-lives);
- document.getElementById("liveTxt").innerText=livesE.innerText+" ("+lives+"/"+MAX+")";
- scoreE.innerText="AMANDLA: "+score+" | COIN: "+coins+" ("+need+"/50)";
+ document.getElementById("liveTxt").innerText=livesE.innerText;
+ scoreE.innerText="AMANDLA "+score+" | 🪙 "+coins+" ("+need+"/50)";
+ levelE.innerText=(document.getElementById("rain").style.display=="block"?"🌧️ ":"")+level;
  localStorage.setItem("zlives",lives);
  localStorage.setItem("zcoins",coins);
  if(lives<MAX && !localStorage.getItem("zlast")) localStorage.setItem("zlast",Date.now());
  if(lives>=MAX) localStorage.removeItem("zlast");
+ // LEVEL SYSTEM
+ if(score<200) level="EASY";
+ else if(score<600) level="MEDIUM";
+ else if(score<1200) level="HARD";
+ else level="SUPERHARD";
+ if(level=="MEDIUM") speed=6.5;
+ if(level=="HARD") speed=8;
+ if(level=="SUPERHARD") speed=9.5;
 }
 function showNo(){
  document.getElementById("start").style.display="none";
@@ -105,7 +230,7 @@ function showNo(){
   let now=Date.now(); let rem=REGEN-((now-last)%REGEN);
   let m=Math.floor(rem/60000), s=Math.floor((rem%60000)/1000);
   document.getElementById("timer").innerText=(m<10?"0":"")+m+":"+(s<10?"0":"")+s;
-  document.getElementById("info").innerText="Next life in "+m+"m "+s+"s";
+  document.getElementById("info").innerText="Next ❤️ in "+m+"m "+s+"s - Full heal in "+Math.ceil(((MAX-(parseInt(localStorage.getItem("zlives")||0))-1)*REGEN+rem)/60000)+"min";
  },1000);
 }
 function checkLife(){
@@ -120,6 +245,11 @@ function buyLife(){
  if(coins>=50 && lives<MAX){ coins-=50; need=0; lives++; ui(); document.getElementById("noLife").style.display="none"; document.getElementById("start").style.display="flex"; }
  else alert("Need 50 coins, you have "+coins);
 }
+function watchAd(){
+ // fake ad reward
+ alert("Ad watched! +1 Life (In real build connect AdMob here)");
+ if(lives<MAX){ lives++; ui(); document.getElementById("noLife").style.display="none"; document.getElementById("start").style.display="flex"; }
+}
 load();
 
 function startGame(){
@@ -127,48 +257,43 @@ function startGame(){
  document.getElementById("start").style.display="none";
  document.getElementById("lifeLost").style.display="none";
  document.getElementById("noLife").style.display="none";
- run=true; score=0; speed=5; need=0; obs=[];
- document.querySelectorAll(".obs,.coin,.heart,.spear").forEach(e=>e.remove());
+ run=true; score=0; speed=5; need=0; obs=[]; level="EASY";
+ document.querySelectorAll(".obs,.coin,.heart,.spear").forEach(e=>{ if(!e.closest("#player")) e.remove(); });
  setTimeout(spawnObs,900);
  setTimeout(spawnCoin,600);
- setTimeout(spawnHeart,6000);
+ setTimeout(spawnHeart,7000);
 }
-
-// NEW: RESUME AFTER LOSING LIFE
 function resumeGame(){
  document.getElementById("lifeLost").style.display="none";
- run=true;
- inv=true;
+ run=true; inv=true;
+ document.getElementById("protectBar").style.width="0%";
  player.classList.add("hit");
- setTimeout(()=>{ player.classList.remove("hit"); inv=false; },1500);
- // clear old obstacles so you don't die instantly again
- document.querySelectorAll(".obs").forEach(e=>e.remove());
- obs=[];
+ setTimeout(()=>{ player.classList.remove("hit"); inv=false; document.getElementById("protectBar").style.width="100%"; },1500);
+ document.querySelectorAll(".obs").forEach(e=>e.remove()); obs=[];
  setTimeout(spawnObs,1200);
- setTimeout(spawnCoin,500);
 }
 
 function doJump(){
  if(jump||!run) return;
  jump=true; player.classList.add("jump");
- setTimeout(()=>{ player.classList.remove("jump"); jump=false; },550);
+ setTimeout(()=>{ player.classList.remove("jump"); jump=false; },580);
 }
 game.addEventListener("touchstart",e=>{
- if(e.target.id!="btn" && e.target.tagName!="BUTTON") doJump();
+ if(e.target.id!="btn" && !e.target.closest("button") && !e.target.closest(".screen")) doJump();
 });
 document.getElementById("btn").addEventListener("touchstart",e=>{ e.preventDefault(); throwSpear(); });
 
 function throwSpear(){
  if(!run) return;
- let s=document.createElement("div"); s.className="spear"; s.style.left="80px"; s.style.bottom="calc(26% + 18px)"; game.appendChild(s);
+ let s=document.createElement("div"); s.className="spear"; s.style.left="90px"; s.style.bottom="calc(26% + 22px)"; game.appendChild(s);
  let mv=setInterval(()=>{
-  let l=parseInt(s.style.left)||80; s.style.left=(l+13)+"px";
+  let l=parseInt(s.style.left)||90; s.style.left=(l+14)+"px";
   if(l>window.innerWidth){ s.remove(); clearInterval(mv); }
   obs.forEach((o,i)=>{
    if(!o.parentElement) return;
    let a=o.getBoundingClientRect(), b=s.getBoundingClientRect();
    if(b.left < a.right && b.right > a.left && b.top < a.bottom && b.bottom > a.top){
-    o.remove(); obs.splice(i,1); s.remove(); clearInterval(mv); score+=15; ui();
+    o.remove(); obs.splice(i,1); s.remove(); clearInterval(mv); score+=20; ui();
    }
   });
  },16);
@@ -176,53 +301,53 @@ function throwSpear(){
 
 function spawnObs(){
  if(!run) return;
- let o=document.createElement("div"); o.className="obs"; o.style.left=window.innerWidth+"px"; game.appendChild(o); obs.push(o);
+ let o=document.createElement("div"); o.className="obs rock"; o.style.left=window.innerWidth+"px"; game.appendChild(o); obs.push(o);
  let mv=setInterval(()=>{
   if(!run){ clearInterval(mv); return; }
   let l=parseInt(o.style.left)||window.innerWidth; o.style.left=(l-speed)+"px";
-  if(l<-50){ o.remove(); clearInterval(mv); obs=obs.filter(x=>x!=o); score+=10; ui(); if(score%80==0) speed+=0.5; }
+  if(l<-60){ o.remove(); clearInterval(mv); obs=obs.filter(x=>x!=o); score+=10; ui(); }
   if(!inv && !jump){
    let pr=player.getBoundingClientRect(), or=o.getBoundingClientRect();
-   if(pr.right-8 > or.left && pr.left+8 < or.right && pr.bottom-10 > or.top && pr.top+8 < or.bottom){
+   if(pr.right-10 > or.left && pr.left+10 < or.right && pr.bottom-12 > or.top && pr.top+10 < or.bottom){
     o.remove(); clearInterval(mv); obs=obs.filter(x=>x!=o);
     lives--; ui();
     if(lives<=0){
-     localStorage.setItem("zlast",Date.now()); run=false;
-     setTimeout(()=>{ showNo(); },150);
+     localStorage.setItem("zlast",Date.now()); run=false; setTimeout(()=>{ showNo(); },200);
     } else {
-     // PAUSE AND SHOW LIFE LOST SCREEN
      run=false;
      document.getElementById("remainLives").innerText="❤️".repeat(lives)+"🖤".repeat(MAX-lives);
-     document.getElementById("lostText").innerText="You lost 1 life! "+lives+" left";
+     document.getElementById("lostText").innerText="Lost 1 life! "+lives+" remaining - Level: "+level;
      document.getElementById("lifeLost").style.display="flex";
+     document.getElementById("protectBar").style.width="100%";
      if(lives==MAX-1) localStorage.setItem("zlast",Date.now());
     }
    }
   }
  },16);
- if(run) setTimeout(spawnObs, 1200+Math.random()*800);
+ let delay = level=="EASY" ? 1300+Math.random()*800 : level=="MEDIUM" ? 1000+Math.random()*600 : level=="HARD" ? 800+Math.random()*500 : 600+Math.random()*400;
+ if(run) setTimeout(spawnObs, delay);
 }
 
 function spawnCoin(){
  if(!run) return;
- let c=document.createElement("div"); c.className="coin"; c.style.left=window.innerWidth+"px"; c.style.bottom=(26+4+Math.random()*18)+"%"; game.appendChild(c);
+ let c=document.createElement("div"); c.className="coin"; c.style.left=window.innerWidth+"px"; c.style.bottom=(26+5+Math.random()*22)+"%"; game.appendChild(c);
  let mv=setInterval(()=>{
   if(!run){ c.remove(); clearInterval(mv); return; }
   let l=parseInt(c.style.left)||window.innerWidth; c.style.left=(l-speed)+"px";
   if(l<-40){ c.remove(); clearInterval(mv); return; }
   let pr=player.getBoundingClientRect(), cr=c.getBoundingClientRect();
   if(pr.left < cr.right && pr.right > cr.left && pr.top < cr.bottom && pr.bottom > cr.top){
-   c.remove(); clearInterval(mv); coins++; need++; score+=5; ui();
+   c.remove(); clearInterval(mv); coins++; need++; score+=8; ui();
    if(need>=50 && lives<MAX){ lives++; need=0; ui(); }
   }
  },16);
- if(run) setTimeout(spawnCoin, 700+Math.random()*600);
+ if(run) setTimeout(spawnCoin, 650+Math.random()*550);
 }
 
 function spawnHeart(){
  if(!run) return;
- if(Math.random()<0.5){
-  let h=document.createElement("div"); h.className="heart"; h.innerText="❤️"; h.style.left=window.innerWidth+"px"; h.style.bottom=(26+12+Math.random()*15)+"%"; game.appendChild(h);
+ if(Math.random()<0.45){
+  let h=document.createElement("div"); h.className="heart"; h.innerText="❤️"; h.style.left=window.innerWidth+"px"; h.style.bottom=(26+14+Math.random()*16)+"%"; game.appendChild(h);
   let mv=setInterval(()=>{
    if(!run){ h.remove(); clearInterval(mv); return; }
    let l=parseInt(h.style.left)||window.innerWidth; h.style.left=(l-speed)+"px";
@@ -230,12 +355,12 @@ function spawnHeart(){
    let pr=player.getBoundingClientRect(), hr=h.getBoundingClientRect();
    if(pr.left < hr.right && pr.right > hr.left && pr.top < hr.bottom && pr.bottom > hr.top){
     h.remove(); clearInterval(mv);
-    if(lives<MAX){ lives++; need=0; ui(); } else { score+=25; ui(); }
+    if(lives<MAX){ lives++; need=0; ui(); } else { score+=30; ui(); }
    }
   },16);
  }
- if(run) setTimeout(spawnHeart, 8000+Math.random()*6000);
+ if(run) setTimeout(spawnHeart, 9000+Math.random()*7000);
 }
 </script>
 </body>
-</html>
+ </html>

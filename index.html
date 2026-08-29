@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Zulu Runner FIXED</title>
+<title>Zulu Runner - Life Pause</title>
 <style>
 html,body{margin:0;padding:0;height:100%;overflow:hidden}
 body{background:#FF8C42;font-family:Arial Black}
 #game{position:relative;width:100vw;height:100vh;background:linear-gradient(to bottom,#FF8C42 0%,#87CEEB 60%);overflow:hidden}
 #ground{position:absolute;bottom:0;width:100%;height:26%;background:#2ecc71;border-top:8px solid #27ae60;z-index:1}
-#player{position:absolute;left:25px;width:50px;height:65px;bottom:26%;z-index:10;background:transparent}
+#player{position:absolute;left:25px;width:50px;height:65px;bottom:26%;z-index:10}
 #player .hat{width:36px;height:10px;background:#D2A24A;margin:0 auto}
 #player .head{width:30px;height:30px;background:#8B5A2B;border-radius:50%;margin:0 auto}
 #player .body{width:34px;height:22px;background:#8B5A2B;margin:2px auto;position:relative}
@@ -26,10 +26,11 @@ body{background:#FF8C42;font-family:Arial Black}
 @keyframes jump{0%{bottom:26%}50%{bottom:62%}100%{bottom:26%}}
 .hit{animation:flash 0.3s 3}
 @keyframes flash{0%,100%{opacity:1}50%{opacity:0.2}}
-#start{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;color:white;text-align:center}
-#start button{padding:14px 28px;font-size:18px;background:#ff8c42;border:3px solid white;color:white;border-radius:10px;margin-top:12px}
-#noLife{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:100;display:none;align-items:center;justify-content:center;flex-direction:column;color:white;text-align:center}
-#noLife button{padding:12px 24px;margin:8px;background:#ff8c42;border:2px solid white;color:white;border-radius:8px}
+.screen{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;color:white;text-align:center;padding:20px;box-sizing:border-box}
+.screen button{padding:14px 28px;font-size:18px;background:#ff8c42;border:3px solid white;color:white;border-radius:10px;margin-top:12px}
+#noLife{display:none}
+#lifeLost{display:none;background:rgba(120,0,0,0.92)}
+#lifeLost h1{color:#FFD700;text-shadow:3px 3px 0 #000}
 </style>
 </head>
 <body>
@@ -38,13 +39,24 @@ body{background:#FF8C42;font-family:Arial Black}
 <div id="ground"></div>
 <div id="player"><div class="hat"></div><div class="head"></div><div class="body"><div class="shield"></div></div><div class="legs"><div class="leg"></div><div class="leg"></div></div></div>
 <button id="btn">THROW</button>
-<div id="start">
+
+<div id="start" class="screen">
 <h1>ZULU RUNNER</h1>
 <p id="liveTxt">❤️❤️❤️❤️❤️</p>
 <p style="font-size:12px">50 coins = +1 life ❤️ | Heart = 1UP</p>
 <button onclick="startGame()">QALA START</button>
 </div>
-<div id="noLife">
+
+<!-- NEW: LIFE LOST PAUSE SCREEN -->
+<div id="lifeLost" class="screen">
+<h1>OUCH! 💥</h1>
+<p id="lostText">You lost 1 life!</p>
+<p id="remainLives" style="font-size:32px;margin:10px">❤️❤️❤️❤️🖤</p>
+<p style="font-size:12px">Be careful warrior!</p>
+<button onclick="resumeGame()">TRY AGAIN ▶</button>
+</div>
+
+<div id="noLife" class="screen">
 <h2>NO LIVES!</h2>
 <div id="timer" style="font-size:32px;color:gold">10:00</div>
 <p id="info"></p>
@@ -52,11 +64,13 @@ body{background:#FF8C42;font-family:Arial Black}
 <button onclick="buyLife()">BUY 50 COINS = 1 LIFE</button>
 </div>
 </div>
+
 <script>
 let score=0,coins=0,need=0,lives=5,jump=false,speed=5,run=false,inv=false;
 let obs=[], game=document.getElementById("game"), player=document.getElementById("player");
 let scoreE=document.getElementById("score"), livesE=document.getElementById("lives");
 const MAX=5, REGEN=10*60*1000;
+
 function load(){
  coins=parseInt(localStorage.getItem("zcoins")||"0");
  let s=localStorage.getItem("zlives");
@@ -84,6 +98,7 @@ function ui(){
 }
 function showNo(){
  document.getElementById("start").style.display="none";
+ document.getElementById("lifeLost").style.display="none";
  document.getElementById("noLife").style.display="flex";
  let last=parseInt(localStorage.getItem("zlast")||Date.now());
  setInterval(()=>{
@@ -106,15 +121,33 @@ function buyLife(){
  else alert("Need 50 coins, you have "+coins);
 }
 load();
+
 function startGame(){
  if(lives<=0){ showNo(); return; }
  document.getElementById("start").style.display="none";
+ document.getElementById("lifeLost").style.display="none";
+ document.getElementById("noLife").style.display="none";
  run=true; score=0; speed=5; need=0; obs=[];
  document.querySelectorAll(".obs,.coin,.heart,.spear").forEach(e=>e.remove());
  setTimeout(spawnObs,900);
  setTimeout(spawnCoin,600);
  setTimeout(spawnHeart,6000);
 }
+
+// NEW: RESUME AFTER LOSING LIFE
+function resumeGame(){
+ document.getElementById("lifeLost").style.display="none";
+ run=true;
+ inv=true;
+ player.classList.add("hit");
+ setTimeout(()=>{ player.classList.remove("hit"); inv=false; },1500);
+ // clear old obstacles so you don't die instantly again
+ document.querySelectorAll(".obs").forEach(e=>e.remove());
+ obs=[];
+ setTimeout(spawnObs,1200);
+ setTimeout(spawnCoin,500);
+}
+
 function doJump(){
  if(jump||!run) return;
  jump=true; player.classList.add("jump");
@@ -124,6 +157,7 @@ game.addEventListener("touchstart",e=>{
  if(e.target.id!="btn" && e.target.tagName!="BUTTON") doJump();
 });
 document.getElementById("btn").addEventListener("touchstart",e=>{ e.preventDefault(); throwSpear(); });
+
 function throwSpear(){
  if(!run) return;
  let s=document.createElement("div"); s.className="spear"; s.style.left="80px"; s.style.bottom="calc(26% + 18px)"; game.appendChild(s);
@@ -139,6 +173,7 @@ function throwSpear(){
   });
  },16);
 }
+
 function spawnObs(){
  if(!run) return;
  let o=document.createElement("div"); o.className="obs"; o.style.left=window.innerWidth+"px"; game.appendChild(o); obs.push(o);
@@ -150,15 +185,24 @@ function spawnObs(){
    let pr=player.getBoundingClientRect(), or=o.getBoundingClientRect();
    if(pr.right-8 > or.left && pr.left+8 < or.right && pr.bottom-10 > or.top && pr.top+8 < or.bottom){
     o.remove(); clearInterval(mv); obs=obs.filter(x=>x!=o);
-    lives--; ui(); player.classList.add("hit"); inv=true;
-    setTimeout(()=>{ player.classList.remove("hit"); inv=false; },700);
-    if(lives<=0){ localStorage.setItem("zlast",Date.now()); run=false; setTimeout(()=>{ alert("Wafa! Score "+score); showNo(); },150); }
-    else if(lives==MAX-1) localStorage.setItem("zlast",Date.now());
+    lives--; ui();
+    if(lives<=0){
+     localStorage.setItem("zlast",Date.now()); run=false;
+     setTimeout(()=>{ showNo(); },150);
+    } else {
+     // PAUSE AND SHOW LIFE LOST SCREEN
+     run=false;
+     document.getElementById("remainLives").innerText="❤️".repeat(lives)+"🖤".repeat(MAX-lives);
+     document.getElementById("lostText").innerText="You lost 1 life! "+lives+" left";
+     document.getElementById("lifeLost").style.display="flex";
+     if(lives==MAX-1) localStorage.setItem("zlast",Date.now());
+    }
    }
   }
  },16);
  if(run) setTimeout(spawnObs, 1200+Math.random()*800);
 }
+
 function spawnCoin(){
  if(!run) return;
  let c=document.createElement("div"); c.className="coin"; c.style.left=window.innerWidth+"px"; c.style.bottom=(26+4+Math.random()*18)+"%"; game.appendChild(c);
@@ -174,6 +218,7 @@ function spawnCoin(){
  },16);
  if(run) setTimeout(spawnCoin, 700+Math.random()*600);
 }
+
 function spawnHeart(){
  if(!run) return;
  if(Math.random()<0.5){

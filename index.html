@@ -2,267 +2,187 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <link rel="manifest" href="manifest.json">
-<title>Zulu Runner - Premium</title>
+<title>Zulu Runner FIXED</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{overflow:hidden;background:#FF9A3C;font-family:'Segoe UI',Arial Black;touch-action:none}
-#game{position:relative;width:100vw;height:100vh;overflow:hidden;background:linear-gradient(to bottom, #4A9DFF 0%, #87CEEB 40%, #FFD27A 70%, #FF8C42 100%)}
-#sun{position:absolute;top:40px;right:80px;width:90px;height:90px;background:radial-gradient(#FFF176,#FFB300);border-radius:50%;box-shadow:0 0 40px #FFEB3B;z-index:0}
-.cloud{position:absolute;background:white;border-radius:50px;opacity:0.8;z-index:1}
-.cloud1{top:60px;left:10%;width:120px;height:35px;animation:cloudMove 25s linear infinite}
-.cloud2{top:100px;left:60%;width:80px;height:25px;animation:cloudMove 30s linear infinite}
-@keyframes cloudMove{from{transform:translateX(-150px)} to{transform:translateX(110vw)}}
-#mountains{position:absolute;bottom:25%;width:100%;height:30%;background:linear-gradient(to top, #8D6E63, transparent);clip-path:polygon(0% 100%, 15% 40%, 30% 70%, 50% 20%, 70% 60%, 85% 30%, 100% 80%, 100% 100%);z-index:1;opacity:0.6}
-#ground{position:absolute;bottom:0;width:100%;height:25%;background:linear-gradient(to bottom, #66BB6A, #2E7D32);border-top:10px solid #8D6E63;z-index:2}
-#ground::after{content:"";position:absolute;top:15px;left:0;width:200%;height:3px;background:repeating-linear-gradient(90deg, transparent, transparent 40px, #1B5E20 40px, #1B5E20 42px);animation:groundMove 1s linear infinite}
-@keyframes groundMove{from{transform:translateX(0)} to{transform:translateX(-42px)}}
-
-#player{position:absolute;left:50px;width:75px;height:95px;bottom:25%;z-index:10;transition:filter 0.2s}
-#player img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(3px 5px 2px rgba(0,0,0,0.4))}
-#player.jumping{animation:jumpReal 0.6s cubic-bezier(0.25,0.46,0.45,0.94)}
-@keyframes jumpReal{0%{bottom:25%}30%{bottom:60%}60%{bottom:58%}100%{bottom:25%}}
-#player.hit{filter:brightness(2) sepia(1) hue-rotate(-50deg);animation:shake 0.3s}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-#shadow{position:absolute;bottom:-8px;left:15px;width:45px;height:10px;background:rgba(0,0,0,0.3);border-radius:50%;z-index:9}
-
-.obs{position:absolute;bottom:25%;width:45px;height:55px;background:linear-gradient(#3E2723,#1B0000);border-radius:6px 6px 0 0;z-index:3;box-shadow:inset -5px 0 10px rgba(0,0,0,0.5);border:2px solid #000}
-.obs::before{content:"▲";position:absolute;top:-12px;left:50%;transform:translateX(-50%);color:#3E2723;font-size:24px}
-.coin{position:absolute;width:34px;height:34px;z-index:4;background:radial-gradient(circle at 30% 30%, #FFF176, #FFB300, #FF8F00);border-radius:50%;border:3px solid #FF6F00;box-shadow:0 0 10px #FFEB3B, inset -3px -3px 5px rgba(0,0,0,0.3);animation:coinSpin 1s linear infinite, coinFloat 1.5s ease-in-out infinite alternate;display:flex;align-items:center;justify-content:center;font-weight:bold;color:#5D4037;font-size:14px}
-@keyframes coinSpin{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
-@keyframes coinFloat{from{margin-bottom:0} to{margin-bottom:8px}}
-.oneup{position:absolute;width:42px;height:42px;z-index:4;background:radial-gradient(#FF5252,#C62828);border-radius:50%;border:3px solid white;box-shadow:0 0 15px #FF5252;animation:heartBeat 0.8s ease-in-out infinite alternate;display:flex;align-items:center;justify-content:center;font-size:22px}
-@keyframes heartBeat{from{transform:scale(1)} to{transform:scale(1.2)}}
-.spear{position:absolute;width:50px;height:8px;background:linear-gradient(#5D4037,#3E2723);z-index:11;border-radius:2px;box-shadow:2px 2px 4px rgba(0,0,0,0.4)}
-.spear::after{content:"";position:absolute;right:-18px;top:-6px;border-left:20px solid #B0BEC5;border-top:10px solid transparent;border-bottom:10px solid transparent;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3))}
-
-#ui{position:absolute;top:0;left:0;width:100%;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;z-index:20;color:white;text-shadow:2px 2px 0 #000, 0 0 5px #000;font-size:15px;background:linear-gradient(to bottom, rgba(0,0,0,0.5), transparent)}
-#leftUI{display:flex;gap:12px;align-items:center}
-#coinUI{background:rgba(0,0,0,0.6);padding:5px 12px;border-radius:20px;border:2px solid #FFB300}
-#btn{position:absolute;bottom:20px;right:20px;width:90px;height:90px;border-radius:50%;background:radial-gradient(#FF5252,#C62828);border:4px solid white;color:white;font-weight:bold;z-index:20;font-size:13px;box-shadow:0 6px 0 #8B0000, 0 0 20px rgba(255,0,0,0.5);transition:transform 0.1s}
-#btn:active{transform:translateY(4px);box-shadow:0 2px 0 #8B0000}
-#jumpHint{position:absolute;bottom:20px;left:20px;background:rgba(0,0,0,0.6);padding:8px 15px;border-radius:20px;color:white;font-size:12px;border:2px solid white;z-index:20}
-
-.screen{position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(rgba(0,0,0,0.85), rgba(40,20,0,0.9));z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;color:white;text-align:center;padding:20px}
-.screen h1{font-size:38px;text-shadow:4px 4px 0 #000, 0 0 20px #FF8C42;letter-spacing:2px}
-.screen button{padding:16px 35px;font-size:20px;background:linear-gradient(#FF8C42,#E65100);border:4px solid white;color:white;border-radius:50px;font-weight:bold;margin-top:15px;box-shadow:0 6px 0 #BF360C;cursor:pointer}
-.screen button:active{transform:translateY(4px);box-shadow:0 2px 0 #BF360C}
-#timer{font-size:36px;color:#FFD700;margin:10px;text-shadow:0 0 10px #FFEB3B}
-.particle{position:absolute;width:8px;height:8px;background:#FFD700;border-radius:50%;pointer-events:none;z-index:15}
-
-
- THIS IS YOUR $$$ VERSION! Look at this warrior I just made for you:
-*That's your NEW real character! Long-press and Save as `player.png` in your Zulu Game folder!*
-
-Now here's your *COMPLETE PREMIUM GAME* - copy this whole code as your new `index.html`:
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
-<link rel="manifest" href="manifest.json">
-<title>Zulu Runner - Premium</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{overflow:hidden;background:#FF9A3C;font-family:'Segoe UI',Arial Black;touch-action:none}
-#game{position:relative;width:100vw;height:100vh;overflow:hidden;background:linear-gradient(to bottom, #4A9DFF 0%, #87CEEB 40%, #FFD27A 70%, #FF8C42 100%)}
-#sun{position:absolute;top:40px;right:80px;width:90px;height:90px;background:radial-gradient(#FFF176,#FFB300);border-radius:50%;box-shadow:0 0 40px #FFEB3B;z-index:0}
-.cloud{position:absolute;background:white;border-radius:50px;opacity:0.8;z-index:1}
-.cloud1{top:60px;left:10%;width:120px;height:35px;animation:cloudMove 25s linear infinite}
-.cloud2{top:100px;left:60%;width:80px;height:25px;animation:cloudMove 30s linear infinite}
-@keyframes cloudMove{from{transform:translateX(-150px)} to{transform:translateX(110vw)}}
-#mountains{position:absolute;bottom:25%;width:100%;height:30%;background:linear-gradient(to top, #8D6E63, transparent);clip-path:polygon(0% 100%, 15% 40%, 30% 70%, 50% 20%, 70% 60%, 85% 30%, 100% 80%, 100% 100%);z-index:1;opacity:0.6}
-#ground{position:absolute;bottom:0;width:100%;height:25%;background:linear-gradient(to bottom, #66BB6A, #2E7D32);border-top:10px solid #8D6E63;z-index:2}
-#ground::after{content:"";position:absolute;top:15px;left:0;width:200%;height:3px;background:repeating-linear-gradient(90deg, transparent, transparent 40px, #1B5E20 40px, #1B5E20 42px);animation:groundMove 1s linear infinite}
-@keyframes groundMove{from{transform:translateX(0)} to{transform:translateX(-42px)}}
-
-#player{position:absolute;left:50px;width:75px;height:95px;bottom:25%;z-index:10;transition:filter 0.2s}
-#player img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(3px 5px 2px rgba(0,0,0,0.4))}
-#player.jumping{animation:jumpReal 0.6s cubic-bezier(0.25,0.46,0.45,0.94)}
-@keyframes jumpReal{0%{bottom:25%}30%{bottom:60%}60%{bottom:58%}100%{bottom:25%}}
-#player.hit{filter:brightness(2) sepia(1) hue-rotate(-50deg);animation:shake 0.3s}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-#shadow{position:absolute;bottom:-8px;left:15px;width:45px;height:10px;background:rgba(0,0,0,0.3);border-radius:50%;z-index:9}
-
-.obs{position:absolute;bottom:25%;width:45px;height:55px;background:linear-gradient(#3E2723,#1B0000);border-radius:6px 6px 0 0;z-index:3;box-shadow:inset -5px 0 10px rgba(0,0,0,0.5);border:2px solid #000}
-.obs::before{content:"▲";position:absolute;top:-12px;left:50%;transform:translateX(-50%);color:#3E2723;font-size:24px}
-.coin{position:absolute;width:34px;height:34px;z-index:4;background:radial-gradient(circle at 30% 30%, #FFF176, #FFB300, #FF8F00);border-radius:50%;border:3px solid #FF6F00;box-shadow:0 0 10px #FFEB3B, inset -3px -3px 5px rgba(0,0,0,0.3);animation:coinSpin 1s linear infinite, coinFloat 1.5s ease-in-out infinite alternate;display:flex;align-items:center;justify-content:center;font-weight:bold;color:#5D4037;font-size:14px}
-@keyframes coinSpin{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
-@keyframes coinFloat{from{margin-bottom:0} to{margin-bottom:8px}}
-.oneup{position:absolute;width:42px;height:42px;z-index:4;background:radial-gradient(#FF5252,#C62828);border-radius:50%;border:3px solid white;box-shadow:0 0 15px #FF5252;animation:heartBeat 0.8s ease-in-out infinite alternate;display:flex;align-items:center;justify-content:center;font-size:22px}
-@keyframes heartBeat{from{transform:scale(1)} to{transform:scale(1.2)}}
-.spear{position:absolute;width:50px;height:8px;background:linear-gradient(#5D4037,#3E2723);z-index:11;border-radius:2px;box-shadow:2px 2px 4px rgba(0,0,0,0.4)}
-.spear::after{content:"";position:absolute;right:-18px;top:-6px;border-left:20px solid #B0BEC5;border-top:10px solid transparent;border-bottom:10px solid transparent;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3))}
-
-#ui{position:absolute;top:0;left:0;width:100%;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;z-index:20;color:white;text-shadow:2px 2px 0 #000, 0 0 5px #000;font-size:15px;background:linear-gradient(to bottom, rgba(0,0,0,0.5), transparent)}
-#leftUI{display:flex;gap:12px;align-items:center}
-#coinUI{background:rgba(0,0,0,0.6);padding:5px 12px;border-radius:20px;border:2px solid #FFB300}
-#btn{position:absolute;bottom:20px;right:20px;width:90px;height:90px;border-radius:50%;background:radial-gradient(#FF5252,#C62828);border:4px solid white;color:white;font-weight:bold;z-index:20;font-size:13px;box-shadow:0 6px 0 #8B0000, 0 0 20px rgba(255,0,0,0.5);transition:transform 0.1s}
-#btn:active{transform:translateY(4px);box-shadow:0 2px 0 #8B0000}
-#jumpHint{position:absolute;bottom:20px;left:20px;background:rgba(0,0,0,0.6);padding:8px 15px;border-radius:20px;color:white;font-size:12px;border:2px solid white;z-index:20}
-
-.screen{position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(rgba(0,0,0,0.85), rgba(40,20,0,0.9));z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;color:white;text-align:center;padding:20px}
-.screen h1{font-size:38px;text-shadow:4px 4px 0 #000, 0 0 20px #FF8C42;letter-spacing:2px}
-.screen button{padding:16px 35px;font-size:20px;background:linear-gradient(#FF8C42,#E65100);border:4px solid white;color:white;border-radius:50px;font-weight:bold;margin-top:15px;box-shadow:0 6px 0 #BF360C;cursor:pointer}
-.screen button:active{transform:translateY(4px);box-shadow:0 2px 0 #BF360C}
-#timer{font-size:36px;color:#FFD700;margin:10px;text-shadow:0 0 10px #FFEB3B}
-.particle{position:absolute;width:8px;height:8px;background:#FFD700;border-radius:50%;pointer-events:none;z-index:15}
+body{margin:0;overflow:hidden;background:#87CEEB;font-family:Arial Black;touch-action:none}
+#game{position:relative;width:100vw;height:100vh;overflow:hidden;background:linear-gradient(#ff8c42 0%, #87CEEB 55%)}
+#ground{position:absolute;bottom:0;width:100%;height:25%;background:#2ecc71;border-top:10px solid #27ae60;z-index:1}
+#player{position:absolute;left:30px;width:55px;height:70px;bottom:25%;z-index:10}
+.head{width:32px;height:32px;background:#8B5A2B;border-radius:50%;margin:0 auto}
+.hat{width:38px;height:12px;background:#D2A24A;margin:0 auto;border-radius:3px}
+.body{width:36px;height:24px;background:#8B5A2B;margin:0 auto;position:relative;border-radius:4px}
+.shield{position:absolute;right:-18px;top:-5px;width:16px;height:32px;background:#8B4513;border:2px solid #5D3311;border-radius:3px}
+.beads{width:28px;height:6px;background:red;margin:3px auto;border-radius:2px}
+.leg{position:absolute;bottom:-20px;width:7px;height:20px;background:#6B4226;border-radius:3px}
+.leg1{left:10px} .leg2{right:10px}
+.obs{position:absolute;bottom:25%;width:45px;height:50px;background:#3e2723;z-index:5;border-radius:4px;border:2px solid #000}
+.coin{position:absolute;width:28px;height:28px;background:#FFD700;border:3px solid #FFA500;border-radius:50%;z-index:4;box-shadow:0 0 8px #FFEB3B}
+.oneup{position:absolute;width:36px;height:36px;background:#ff4757;border-radius:50%;border:3px solid white;z-index:4;display:flex;align-items:center;justify-content:center;color:white;font-size:20px;animation:pulse 0.8s infinite alternate}
+@keyframes pulse{from{transform:scale(1)} to{transform:scale(1.15)}}
+.spear{position:absolute;width:40px;height:6px;background:#111;z-index:6;border-radius:2px}
+#ui{position:absolute;top:0;left:0;width:100%;display:flex;justify-content:space-between;padding:10px 12px;box-sizing:border-box;color:white;text-shadow:2px 2px 0 #000;z-index:20;font-size:14px;background:rgba(0,0,0,0.3)}
+/* FIXED BUTTON - HIGHER UP SO NOT CUT OFF */
+#btn{position:absolute;bottom:85px;right:15px;width:90px;height:90px;border-radius:50%;background:radial-gradient(#ff6b6b,#ee5a24);border:4px solid white;color:white;font-weight:bold;z-index:30;font-size:14px;box-shadow:0 4px 0 #000, 0 0 15px rgba(0,0,0,0.4)}
+#btn:active{transform:translateY(3px);box-shadow:0 1px 0 #000}
+.jump{animation:jumpAnim 0.6s ease-out}
+@keyframes jumpAnim{0%{bottom:25%}50%{bottom:60%}100%{bottom:25%}}
+.hit{animation:flash 0.4s 3}
+@keyframes flash{0%,100%{opacity:1}50%{opacity:0.3}}
+.screen{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;color:white;text-align:center;padding:20px}
+.screen button{padding:15px 30px;font-size:20px;background:#ff8c42;border:3px solid white;color:white;border-radius:12px;font-weight:bold;margin-top:12px}
+#timer{font-size:36px;color:#FFD700;margin:12px}
+</style>
 </head>
 <body>
 <div id="game">
- <div id="sun"></div>
- <div class="cloud cloud1"></div>
- <div class="cloud cloud2"></div>
- <div id="mountains"></div>
+ <div id="ui"><span id="livesUI">❤️❤️❤️❤️❤️</span><span id="score">AMANDLA: 0 | 🪙 0</span><span id="sp">SPEAR x∞</span></div>
  <div id="ground"></div>
- <div id="ui">
-   <div id="leftUI">
-     <span id="livesUI">❤️❤️❤️❤️❤️</span>
-     <span id="coinUI">🪙 <span id="coinCount">0</span>/50</span>
-   </div>
-   <span id="score">AMANDLA: 0</span>
-   <span id="sp">SPEAR x∞</span>
- </div>
- <div id="player"><div id="shadow"></div><img id="playerImg" src="player.png" onerror="this.style.display='none'; http://this.parentElement.innerHTML='<div style=\'width:50px;height:60px;background:#8B5A2B;border-radius:10px\'></div>'"></div>
- <button id="btn">⚔️ THROW</button>
- <div id="jumpHint">TAP SCREEN TO JUMP</div>
-
+ <div id="player"><div class="hat"></div><div class="head"></div><div class="body"><div class="shield"></div><div class="beads"></div></div><div class="leg leg1"></div><div class="leg leg2"></div></div>
+ <button id="btn">THROW<br>⚔️</button>
  <div id="startScreen" class="screen">
    <h1>ZULU RUNNER</h1>
-   <p style="color:#FFD700;letter-spacing:3px">PREMIUM EDITION</p>
-   <p id="livesText" style="margin:10px;font-size:18px">❤️❤️❤️❤️❤️</p>
-   <p style="font-size:13px;max-width:280px">Collect 50 coins = +1 LIFE ❤️<br>Collect heart = instant 1UP!<br>Throw spears to smash rocks</p>
-   <button onclick="startGame()">QALA! START ▶</button>
-   <p style="font-size:10px;margin-top:15px;opacity:0.6">5 Lives • 10min per heart • 50min full<br>Made in KZN 🇿🇦</p>
+   <p id="livesText">❤️❤️❤️❤️❤️ (5/5)</p>
+   <p style="font-size:13px">50 Coins = +1 Life ❤️<br>Heart = instant 1UP</p>
+   <button onclick="startGame()">QALA! START</button>
+   <p style="font-size:11px;margin-top:10px;opacity:0.7">Fixed: Button not cut + Rocks kill now!</p>
  </div>
-
  <div id="noLivesScreen" class="screen" style="display:none">
-   <h1>AMABUTHO FALLEN!</h1>
-   <p>All warriors resting...</p>
+   <h1>NO LIVES!</h1>
    <div id="timer">10:00</div>
-   <p id="refillInfo"></p>
-   <p id="fullInfo" style="font-size:11px;opacity:0.7"></p>
-   <button onclick="checkLives()">CHECK LIVES ❤️</button>
-   <button onclick="addLifeForCoins()" style="background:linear-gradient(#FFD700,#FF8F00);color:#000;border-color:#FFF">🪙 BUY 1 LIFE - 50 COINS</button>
+   <p id="refillInfo">Next life in...</p>
+   <button onclick="checkLives()">CHECK</button>
+   <button onclick="buyLife()">🪙 BUY 50 COINS = 1❤️</button>
  </div>
 </div>
-
 <script>
-let score=0,coins=0,coinsForLife=0,spears=999,jumping=false,speed=6,gameRunning=false,lives=5,invincible=false;
-const MAX_LIVES=5, REGEN_TIME=10_60_1000;
-let obsList=[];
-let player=document.getElementById("player"),game=document.getElementById("game");
-let scoreEl=document.getElementById("score"),livesUI=document.getElementById("livesUI"),coinCount=document.getElementById("coinCount");
+let score=0,coins=0,coinsForLife=0,spears=999,jumping=false,speed=5,gameRunning=false,lives=5,invincible=false;
+const MAX_LIVES=5, REGEN_TIME=10*60*1000;
+let obsList=[], game=document.getElementById("game"), player=document.getElementById("player");
+let scoreEl=document.getElementById("score"), livesUI=document.getElementById("livesUI");
 
-function loadProgress(){
+function loadLives(){
  coins=parseInt(localStorage.getItem("zulu_coins")||0);
- lives=parseInt(localStorage.getItem("zulu_lives")||MAX_LIVES);
- let lastTime=parseInt(localStorage.getItem("zulu_lastTime")||Date.now());
+ let saved=localStorage.getItem("zulu_lives");
+ let last=parseInt(localStorage.getItem("zulu_lastTime")||Date.now());
  let now=Date.now();
- if(lives<MAX_LIVES){
-   let add=Math.floor((now-lastTime)/REGEN_TIME);
-   if(add>0){ lives=Math.min(MAX_LIVES,lives+add); lastTime+=add_REGEN_TIME; http://localStorage.setItem("zulu_lastTime",lastTime); http://localStorage.setItem("zulu_lives",lives); }
+ if(saved===null) lives=MAX_LIVES;
+ else {
+   lives=parseInt(saved);
+   let elapsed=now-last;
+   if(lives<MAX_LIVES){
+     let add=Math.floor(elapsed/REGEN_TIME);
+     if(add>0){ lives=Math.min(MAX_LIVES,lives+add); last+=add*REGEN_TIME; localStorage.setItem("zulu_lastTime",last); }
+   }
  }
  updateUI();
  if(lives<=0) showNoLives();
 }
 function updateUI(){
- http://livesUI.innerText="❤️".repeat(lives)+"🖤".repeat(MAX_LIVES-lives);
- http://document.getElementById("livesText").innerText=livesUI.innerText+" ("+lives+"/"+MAX_LIVES+")";
- http://coinCount.innerText=coinsForLife;
- http://document.getElementById("coinUI").innerHTML="🪙 "+coins+" <span style='opacity:0.7'>| "+coinsForLife+"/50 → ❤️</span>";
- http://localStorage.setItem("zulu_coins",coins); http://localStorage.setItem("zulu_lives",lives);
- if(lives<MAX_LIVES && !localStorage.getItem("zulu_lastTime")) http://localStorage.setItem("zulu_lastTime",Date.now());
- if(lives>=MAX_LIVES) http://localStorage.removeItem("zulu_lastTime");
+ livesUI.innerText="❤️".repeat(lives)+"🖤".repeat(MAX_LIVES-lives);
+ document.getElementById("livesText").innerText=livesUI.innerText+" ("+lives+"/"+MAX_LIVES+")";
+ scoreEl.innerText="AMANDLA: "+score+" | 🪙 "+coins+" ("+coinsForLife+"/50)";
+ localStorage.setItem("zulu_lives",lives); localStorage.setItem("zulu_coins",coins);
+ if(lives<MAX_LIVES && !localStorage.getItem("zulu_lastTime")) localStorage.setItem("zulu_lastTime",Date.now());
+ if(lives>=MAX_LIVES) localStorage.removeItem("zulu_lastTime");
 }
-function showNoLives(){ http://document.getElementById("startScreen").style.display="none"; http://document.getElementById("noLivesScreen").style.display="flex"; startTimer(); }
+function showNoLives(){ document.getElementById("startScreen").style.display="none"; document.getElementById("noLivesScreen").style.display="flex"; startTimer(); }
 function startTimer(){
  let last=parseInt(localStorage.getItem("zulu_lastTime")||Date.now());
  setInterval(()=>{
-   let now=Date.now(); let elapsed=now-last; let remaining=REGEN_TIME-(elapsed%REGEN_TIME);
+   let now=Date.now(), elapsed=now-last, remaining=REGEN_TIME-(elapsed%REGEN_TIME);
    let m=Math.floor(remaining/60000), s=Math.floor((remaining%60000)/1000);
-   http://document.getElementById("timer").innerText=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
-   let livesNow=parseInt(localStorage.getItem("zulu_lives")||0);
-   let total=(MAX_LIVES-livesNow-1)_REGEN_TIME+remaining;
-   http://document.getElementById("refillInfo").innerText="Next ❤️ in "+m+"m "+s+"s";
-   http://document.getElementById("fullInfo").innerText="Full (5❤️) in "+Math.ceil(total/60000)+" min • Or buy with 50 coins";
+   document.getElementById("timer").innerText=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+   document.getElementById("refillInfo").innerText="Next ❤️ in "+m+"m "+s+"s - Full in "+Math.ceil(((MAX_LIVES-(parseInt(localStorage.getItem("zulu_lives")||0))-1)*REGEN_TIME+remaining)/60000)+"min";
  },1000);
 }
-function checkLives(){ let last=parseInt(localStorage.getItem("zulu_lastTime")||Date.now()); let now=Date.now(); let add=Math.floor((now-last)/REGEN_TIME); if(add>0){ lives=Math.min(MAX_LIVES,lives+add); http://localStorage.setItem("zulu_lives",lives); http://localStorage.setItem("zulu_lastTime",last+add_REGEN_TIME); } updateUI(); if(lives>0){ http://document.getElementById("noLivesScreen").style.display="none"; http://document.getElementById("startScreen").style.display="flex"; } }
-function addLifeForCoins(){ if(coins>=50 && lives<MAX_LIVES){ coins-=50; lives++; updateUI(); createParticles(20, http://window.innerWidth/2, http://window.innerHeight/2, "❤️"); if(lives>0){ http://document.getElementById("noLivesScreen").style.display="none"; http://document.getElementById("startScreen").style.display="flex"; } } else if(coins<50){ alert("Need 50 coins! You have "+coins); } }
-function createParticles(n,x,y,emoji="✨"){ for(let i=0;i<n;i++){ let p=document.createElement("div"); http://p.className="particle"; http://p.style.left=x+"px"; http://p.style.top=y+"px"; http://p.style.background="transparent"; http://p.innerText=emoji; http://p.style.fontSize="14px"; http://game.appendChild(p); let ang=Math.random()_Math.PI_2, dist=50+Math.random()_80; let tx=Math.cos(ang)_dist, ty=Math.sin(ang)_dist; http://p.animate([{transform:"translate(0,0) scale(1)",opacity:1},{transform:`translate(${tx}px,${ty}px) scale(0)`,opacity:0}],{duration:800+Math.random()_400,easing:"cubic-bezier(0.25,0.46,0.45,0.94)"}).onfinish=()=>p.remove(); } }
-
-loadProgress();
+function checkLives(){ let last=parseInt(localStorage.getItem("zulu_lastTime")||Date.now()), now=Date.now(), add=Math.floor((now-last)/REGEN_TIME); if(add>0){ lives=Math.min(MAX_LIVES,lives+add); localStorage.setItem("zulu_lives",lives); localStorage.setItem("zulu_lastTime",last+add*REGEN_TIME); } updateUI(); if(lives>0){ document.getElementById("noLivesScreen").style.display="none"; document.getElementById("startScreen").style.display="flex"; } }
+function buyLife(){ if(coins>=50 && lives<MAX_LIVES){ coins-=50; coinsForLife=0; lives++; updateUI(); if(lives>0){ document.getElementById("noLivesScreen").style.display="none"; document.getElementById("startScreen").style.display="flex"; } } else alert("Need 50 coins, you have "+coins); }
+loadLives();
 
 function startGame(){
  if(lives<=0){ showNoLives(); return; }
- http://document.getElementById("startScreen").style.display="none"; gameRunning=true; score=0; speed=6; coinsForLife=0; obsList=[]; http://document.querySelectorAll(".obs,.coin,.oneup,.spear").forEach(e=>e.remove());
- setTimeout(spawnObs,800); setTimeout(spawnCoin,500); setTimeout(spawnOneUp,8000);
+ document.getElementById("startScreen").style.display="none";
+ gameRunning=true; score=0; speed=5; coinsForLife=0; obsList=[];
+ document.querySelectorAll(".obs,.coin,.oneup,.spear").forEach(e=>e.remove());
+ setTimeout(spawnObs,1000); setTimeout(spawnCoin,800); setTimeout(spawnHeart,7000);
 }
-function jump(){ if(jumping||!gameRunning) return; jumping=true; http://player.classList.add("jumping"); setTimeout(()=>{ http://player.classList.remove("jumping"); jumping=false; },600); }
-http://game.addEventListener("touchstart",e=>{ if(e.target.id!="btn" && !e.target.closest(".screen")) jump(); });
-http://document.getElementById("btn").addEventListener("touchstart",e=>{ http://e.preventDefault(); throwSpear(e); });
-function throwSpear(e){
- if(!gameRunning) return; http://e.stopPropagation();
- let s=document.createElement("div"); http://s.className="spear"; http://s.style.left="90px"; http://s.style.bottom="calc(25% + 35px)"; http://game.appendChild(s);
- createParticles(3,110,window.innerHeight_0.65,"💨");
- let mv=setInterval(()=>{ let l=parseInt(s.style.left); http://s.style.left=(l+14)+"px"; if(l>window.innerWidth){ http://s.remove(); clearInterval(mv); } http://obsList.forEach((o,i)=>{ let oR=o.getBoundingClientRect(), sR=s.getBoundingClientRect(); if(sR.left<oR.right && http://sR.right>oR.left && http://sR.top<oR.bottom && http://sR.bottom>oR.top){ http://o.remove(); http://obsList.splice(i,1); http://s.remove(); clearInterval(mv); score+=25; http://scoreEl.innerText="AMANDLA: "+score; createParticles(12, http://oR.left, http://oR.top, "💥"); } }); },16);
+function jump(){ if(jumping||!gameRunning) return; jumping=true; player.classList.add("jump"); setTimeout(()=>{ player.classList.remove("jump"); jumping=false; },600); }
+game.addEventListener("touchstart",e=>{ if(e.target.id!="btn" && !e.target.closest(".screen")) jump(); });
+document.getElementById("btn").addEventListener("touchstart",e=>{ e.preventDefault(); throwSpear(); });
+
+function throwSpear(){
+ if(!gameRunning) return;
+ let s=document.createElement("div"); s.className="spear"; s.style.left="85px"; s.style.bottom="calc(25% + 20px)"; game.appendChild(s);
+ let mv=setInterval(()=>{
+   let l=parseInt(s.style.left); s.style.left=(l+12)+"px";
+   if(l>window.innerWidth){ s.remove(); clearInterval(mv); }
+   obsList.forEach((o,i)=>{
+     if(!o.parentElement) return;
+     let or=o.getBoundingClientRect(), sr=s.getBoundingClientRect();
+     if(sr.left < or.right && sr.right > or.left && sr.top < or.bottom && sr.bottom > or.top){
+       o.remove(); obsList.splice(i,1); s.remove(); clearInterval(mv); score+=20; updateUI();
+     }
+   });
+ },16);
 }
+
 function spawnObs(){
  if(!gameRunning) return;
- let o=document.createElement("div"); http://o.className="obs"; http://o.style.left=window.innerWidth+"px"; http://game.appendChild(o); http://obsList.push(o);
+ let o=document.createElement("div"); o.className="obs"; o.style.left=window.innerWidth+"px"; game.appendChild(o); obsList.push(o);
  let mv=setInterval(()=>{
    if(!gameRunning){ clearInterval(mv); return; }
-   let l=parseInt(o.style.left); if(isNaN(l)) l=window.innerWidth; http://o.style.left=(l-speed)+"px";
-   if(l< -60){ http://o.remove(); clearInterval(mv); obsList=obsList.filter(x=>x!=o); score+=10; http://scoreEl.innerText="AMANDLA: "+score; if(score%100==0) speed+=0.4; }
-   if(l<90 && l>25 && !jumping && !invincible){ let pb=parseInt(getComputedStyle(player).bottom); if(pb<38){ http://o.remove(); clearInterval(mv); obsList=obsList.filter(x=>x!=o); loseLife(); } }
- },16);
- if(gameRunning) setTimeout(spawnObs, 1200+Math.random()_900);
-}
-function spawnCoin(){
- if(!gameRunning) return;
- let c=document.createElement("div"); http://c.className="coin"; http://c.innerText="$"; http://c.style.left=window.innerWidth+"px"; http://c.style.bottom=(25+10+Math.random()_25)+"%"; http://game.appendChild(c);
- let mv=setInterval(()=>{
-   if(!gameRunning){ clearInterval(mv); http://c.remove(); return; }
-   let l=parseInt(c.style.left); http://c.style.left=(l-speed)+"px";
-   if(l< -40){ http://c.remove(); clearInterval(mv); }
-   let pR=player.getBoundingClientRect(), cR=c.getBoundingClientRect();
-   if(pR.left<cR.right && http://pR.right>cR.left && http://pR.top<cR.bottom && http://pR.bottom>cR.top){
-     http://c.remove(); clearInterval(mv); coins++; coinsForLife++; score+=5; http://scoreEl.innerText="AMANDLA: "+score; createParticles(8, http://cR.left, http://cR.top, "🪙"); updateUI();
-     if(coinsForLife>=50){ // 1UP from coins
-       if(lives<MAX_LIVES){ lives++; createParticles(15, http://pR.left, http://pR.top, "❤️"); } 
-       coinsForLife=0; updateUI();
-       // bonus flash
-       http://document.body.animate([{background:"#FFD700"},{background:"#FF9A3C"}],{duration:300});
+   let l=parseInt(o.style.left); o.style.left=(l-speed)+"px";
+   if(l < -50){ o.remove(); clearInterval(mv); obsList=obsList.filter(x=>x!=o); score+=10; updateUI(); if(score%60==0) speed+=0.4; }
+   // FIXED COLLISION - USE RECT OVERLAP, NOT BOTTOM CHECK
+   if(!invincible && !jumping){
+     let pr=player.getBoundingClientRect(), or=o.getBoundingClientRect();
+     // smaller hitbox so not too hard
+     if(pr.right-10 > or.left && pr.left+10 < or.right && pr.bottom-15 > or.top && pr.top+15 < or.bottom){
+       o.remove(); clearInterval(mv); obsList=obsList.filter(x=>x!=o);
+       lives--; updateUI(); player.classList.add("hit"); invincible=true;
+       setTimeout(()=>{ player.classList.remove("hit"); invincible=false; },800);
+       if(lives<=0){ localStorage.setItem("zulu_lastTime",Date.now()); gameRunning=false; setTimeout(()=>{ alert("Wafa! Score: "+score+" Coins: "+coins); showNoLives(); },200); }
+       else if(lives==MAX_LIVES-1) localStorage.setItem("zulu_lastTime",Date.now());
      }
    }
  },16);
- if(gameRunning) setTimeout(spawnCoin, 600+Math.random()_800);
+ if(gameRunning) setTimeout(spawnObs, 1300+Math.random()*800);
 }
-function spawnOneUp(){
+
+function spawnCoin(){
  if(!gameRunning) return;
- if(Math.random()<0.4){ // 40% chance
-   let h=document.createElement("div"); http://h.className="oneup"; http://h.innerText="❤️"; http://h.style.left=window.innerWidth+"px"; http://h.style.bottom=(25+20+Math.random()_20)+"%"; http://game.appendChild(h);
+ let c=document.createElement("div"); c.className="coin"; c.style.left=window.innerWidth+"px"; c.style.bottom=(25+5+Math.random()*20)+"%"; game.appendChild(c);
+ let mv=setInterval(()=>{
+   if(!gameRunning){ c.remove(); clearInterval(mv); return; }
+   let l=parseInt(c.style.left); c.style.left=(l-speed)+"px";
+   if(l< -40){ c.remove(); clearInterval(mv); return; }
+   let pr=player.getBoundingClientRect(), cr=c.getBoundingClientRect();
+   if(pr.left < cr.right && pr.right > cr.left && pr.top < cr.bottom && pr.bottom > cr.top){
+     c.remove(); clearInterval(mv); coins++; coinsForLife++; score+=5; updateUI();
+     if(coinsForLife>=50 && lives<MAX_LIVES){ lives++; coinsForLife=0; updateUI(); alert("1UP! +1 Life from 50 coins! ❤️"); }
+   }
+ },16);
+ if(gameRunning) setTimeout(spawnCoin, 700+Math.random()*700);
+}
+
+function spawnHeart(){
+ if(!gameRunning) return;
+ if(Math.random()<0.5){
+   let h=document.createElement("div"); h.className="oneup"; h.innerText="❤️"; h.style.left=window.innerWidth+"px"; h.style.bottom=(25+15+Math.random()*15)+"%"; game.appendChild(h);
    let mv=setInterval(()=>{
-     if(!gameRunning){ clearInterval(mv); http://h.remove(); return; }
-     let l=parseInt(h.style.left); http://h.style.left=(l-speed)+"px";
-     if(l< -50){ http://h.remove(); clearInterval(mv); }
-     let pR=player.getBoundingClientRect(), hR=h.getBoundingClientRect();
-     if(pR.left<hR.right && http://pR.right>hR.left && http://pR.top<hR.bottom && http://pR.bottom>hR.top){
-       http://h.remove(); clearInterval(mv);
-       if(lives<MAX_LIVES){ lives++; updateUI(); createParticles(20, http://hR.left, http://hR.top, "❤️"); } else { score+=50; http://scoreEl.innerText="AMANDLA: "+score; }
+     if(!gameRunning){ h.remove(); clearInterval(mv); return; }
+     let l=parseInt(h.style.left); h.style.left=(l-speed)+"px";
+     if(l< -50){ h.remove(); clearInterval(mv); return; }
+     let pr=player.getBoundingClientRect(), hr=h.getBoundingClientRect();
+     if(pr.left < hr.right && pr.right > hr.left && pr.top < hr.bottom && pr.bottom > hr.top){
+       h.remove(); clearInterval(mv);
+       if(lives<MAX_LIVES){ lives++; updateUI(); } else { score+=30; updateUI(); }
      }
    },16);
  }
- if(gameRunning) setTimeout(spawnOneUp, 10000+Math.random()_10000);
-}
-function loseLife(){
- if(invincible) return;
- lives--; updateUI(); http://player.classList.add("hit"); invincible=true; createParticles(10, 60, http://window.innerHeight_0.6, "💔");
- setTimeout(()=>{ http://player.classList.remove("hit"); invincible=false; },1000);
- if(lives<=0){ http://localStorage.setItem("zulu_lastTime",Date.now()); gameRunning=false; setTimeout(()=>{ alert("Wafa! Warriors exhausted!\nScore: "+score+"\nCoins: "+coins+"\n\n10min = 1❤️\n50 coins = BUY 1❤️"); showNoLives(); },300); }
- else { if(lives==MAX_LIVES-1) http://localStorage.setItem("zulu_lastTime",Date.now()); }
+ if(gameRunning) setTimeout(spawnHeart, 9000+Math.random()*8000);
 }
 </script>
 </body>
